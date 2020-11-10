@@ -263,7 +263,20 @@ public final class Header {
         return (header >>> 20) == 0b1111_1111_1111;
     }
 
+    /**
+     * One bit to indicate the ID of the algorithm. Equals '1' for MPEG audio, '0' is reserved.
+     *
+     * @param header The header information, common to all layers.
+     * @return True if the ID is '1', false if the ID is '0'.
+     */
     private boolean verifyAlgorithm(final int header) {
+        // The bit 13 of header information have the information of ID.
+        // The shift right is 19, because 32 - 13 = 19
+        // An 'int' have 32 bits in Java.
+        // To make the bitshift, not is possible get the bit 13 in terms of '0' and '1'
+        // this always will be content information of other bit that not are part of
+        // ID, for hence, is important make the operation bit AND for verify only the
+        // bit that we needed.
         return ((header >>> 19) & 0b0001) == 1;
     }
 
