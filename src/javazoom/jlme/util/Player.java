@@ -73,33 +73,30 @@ public class Player {
     }
 
 
-    public static void main(String args[]) throws Exception {
-        if (args.length > 0) {
-            String file = args[0];
-            try {
-                if (file.equalsIgnoreCase("-url")) {
-                    if (args.length > 1) {
-                        URL u = new URL(args[1]);
-                        Player player = new Player(new BufferedInputStream(u.openStream(), 2048));
-                        System.out.println("starting");
-                        player.play();
-                        System.out.println("ending");
-                    } else {
-                        usage();
-                    }
-                } else {
-                    Player player = new Player(new BufferedInputStream(new FileInputStream(file), 2048));
+    public static void main(String[] args) {
+        if (args.length <= 0) usage();
+
+        String file = args[0];
+        try {
+            if (file.equalsIgnoreCase("-url")) {
+                if (args.length > 1) {
+                    URL u = new URL(args[1]);
+                    Player player = new Player(new BufferedInputStream(u.openStream(), 2048));
                     System.out.println("starting");
                     player.play();
                     System.out.println("ending");
+                } else {
+                    usage();
                 }
-            } catch (Exception e) {
-                System.err.println("couldn't locate the mp3 file");
+            } else {
+                Player player = new Player(new BufferedInputStream(new FileInputStream(file), 2048));
+                System.out.println("starting");
+                player.play();
+                System.out.println("ending");
             }
-        } else {
-            usage();
+        } catch (Exception e) {
+            System.err.println("couldn't locate the mp3 file");
         }
-        System.exit(0);
     }
 
     private static void usage() {
