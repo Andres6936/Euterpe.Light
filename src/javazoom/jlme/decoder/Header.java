@@ -252,6 +252,11 @@ public final class Header {
         return h_intensity_stereo_bound;
     }
 
+    /**
+     * Section 2.4.2.3 Header
+     * <p>
+     * The first 32 bits (four bytes) are header information which is common to all layers.
+     */
     final void read_header(BitStream stream) throws IOException {
         int headerstring;
         int channel_bitrate;
