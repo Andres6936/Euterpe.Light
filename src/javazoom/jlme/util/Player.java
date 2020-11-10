@@ -38,12 +38,12 @@ import javazoom.jlme.decoder.BitStream;
 
 public class Player {
     private static SourceDataLine line;
-    private BitStream bitstream;
+    private final BitStream bitstream;
     private boolean playable = true;
     //Runtime rt = null;
 
 
-    public Player(InputStream stream) throws Exception {
+    public Player(InputStream stream) {
         bitstream = new BitStream(stream);
         //rt = Runtime.getRuntime();
     }
