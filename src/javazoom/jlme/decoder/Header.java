@@ -263,6 +263,10 @@ public final class Header {
         return (header >>> 20) == 0b1111_1111_1111;
     }
 
+    private boolean verifyAlgorithm(final int header) {
+        return ((header >>> 19) & 0b0001) == 1;
+    }
+
     /**
      * Section 2.4.2.3 Header
      * <p>
@@ -276,7 +280,11 @@ public final class Header {
             headerstring = stream.syncHeader(syncmode);
 
             assert verifySyncWord(headerstring);
+            assert verifyAlgorithm(headerstring);
+
             System.out.println("Header String: " + Integer.toBinaryString(headerstring));
+            System.out.println("SynWord: " + verifySyncWord(headerstring));
+            System.out.println("Algorithm: " + verifyAlgorithm(headerstring));
 
             if (syncmode == BitStream.INITIAL_SYNC) {
                 h_version = ((headerstring >>> 19) & 1);
