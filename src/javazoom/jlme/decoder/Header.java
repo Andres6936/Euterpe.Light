@@ -253,6 +253,17 @@ public final class Header {
     }
 
     /**
+     * @param header The header information, common to all layers.
+     * @return True if the SyncWord is the bit string '1111 1111 1111'.
+     */
+    private boolean verifySyncWord(final int header) {
+        // The first 12 bits of header contain the bit string.
+        // The shift right is 20, because 32 - 12 = 20
+        // An 'int' have 32 bits in Java.
+        return (header >>> 20) == 0b1111_1111_1111;
+    }
+
+    /**
      * Section 2.4.2.3 Header
      * <p>
      * The first 32 bits (four bytes) are header information which is common to all layers.
@@ -263,6 +274,10 @@ public final class Header {
         boolean sync = false;
         do {
             headerstring = stream.syncHeader(syncmode);
+
+            assert verifySyncWord(headerstring);
+            System.out.println("Header String: " + Integer.toBinaryString(headerstring));
+
             if (syncmode == BitStream.INITIAL_SYNC) {
                 h_version = ((headerstring >>> 19) & 1);
                 if ((h_sample_frequency = ((headerstring >>> 10) & 3)) == 3) {
