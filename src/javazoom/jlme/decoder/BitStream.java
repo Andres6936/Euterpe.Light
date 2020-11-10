@@ -21,6 +21,7 @@
 package javazoom.jlme.decoder;
 
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -54,8 +55,14 @@ public final class BitStream {
     private final static Header header = new Header();
     private final static byte syncbuf[] = new byte[4];
 
+    /**
+     * Representation in bytes of mp3.
+     */
+    private final BufferedInputStream bufferByte;
+
 
     public BitStream(InputStream in) {
+        bufferByte = new BufferedInputStream(in);
         source = new PushBackStream(in, 512);
         closeFrame();
         Header.syncmode = INITIAL_SYNC;
@@ -73,6 +80,18 @@ public final class BitStream {
         }
 
         return true;
+    }
+
+    public int getHeader() {
+        final byte[] buffer = new byte[4];
+
+        try {
+            assert bufferByte.read(buffer, 0, 4) == 4;
+        } catch (IOException exception) {
+            System.err.println("Read of header not is possible.");
+        }
+
+        return (buffer[0] << 24) + (buffer[1] << 16) + (buffer[2] << 8) + buffer[3];
     }
 
     /**
@@ -146,9 +165,6 @@ public final class BitStream {
 
     /**
      * Unreads the bytes read from the frame.
-     *
-     * @throws IOException        Description of Exception
-     * @throws BitstreamException
      */
     // REVIEW: add new error codes for this.
     public final void unreadFrame() throws IOException {
