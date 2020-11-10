@@ -113,7 +113,7 @@ public class Player {
         Decoder decoder = new Decoder(header, bitstream);
         while (playable) {
             try {
-                SampleBuffer output = (SampleBuffer) decoder.decodeFrame();
+                SampleBuffer output = decoder.decodeFrame();
                 length = output.size();
                 if (length == 0) break;
                 //{
