@@ -277,6 +277,8 @@ public final class Header {
         //  this always will be content information of other bit that not are part of
         //  ID, for hence, is important make the operation bit AND for verify only the
         //  bit that we needed.
+        // The statement INTEGER 'BIT OPERATION' INTEGER in Java return a INTEGER.
+        //  For hence, is needed convert it value INTEGER to BOOLEAN
         return ((header >>> 19) & 0b0001) == 1;
     }
 
