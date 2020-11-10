@@ -274,9 +274,9 @@ public final class Header {
         // The shift right is 19, because 32 - 13 = 19
         // An 'int' have 32 bits in Java.
         // To make the bitshift, not is possible get the bit 13 in terms of '0' and '1'
-        // this always will be content information of other bit that not are part of
-        // ID, for hence, is important make the operation bit AND for verify only the
-        // bit that we needed.
+        //  this always will be content information of other bit that not are part of
+        //  ID, for hence, is important make the operation bit AND for verify only the
+        //  bit that we needed.
         return ((header >>> 19) & 0b0001) == 1;
     }
 
