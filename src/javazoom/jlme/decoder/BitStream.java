@@ -82,6 +82,9 @@ public final class BitStream {
         return true;
     }
 
+    /**
+     * @return The first 32 bits (four bytes) are header information which is common to all layers.
+     */
     public int getHeader() {
         final byte[] buffer = new byte[4];
 
