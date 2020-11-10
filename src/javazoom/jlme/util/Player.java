@@ -38,7 +38,6 @@ import javazoom.jlme.decoder.BitStream;
 
 
 public class Player {
-    private static Decoder decoder;
     private static SourceDataLine line;
     private BitStream bitstream;
     private boolean playable = true;
@@ -111,7 +110,7 @@ public class Player {
         boolean first = true;
         int length;
         Header header = bitstream.readFrame();
-        decoder = new Decoder(header, bitstream);
+        Decoder decoder = new Decoder(header, bitstream);
         while (playable) {
             try {
                 SampleBuffer output = (SampleBuffer) decoder.decodeFrame();
