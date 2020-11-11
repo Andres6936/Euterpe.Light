@@ -289,6 +289,12 @@ public final class Header {
         return ((header >>> 19) & 0b0001) == 1;
     }
 
+    /**
+     * Determine which layer is used.
+     *
+     * @param header The header information, common to all layers.
+     * @return The layer that is used.
+     */
     private Layer getLayerUsed(final int header) {
         int result = header >>> 17;
         result = result << 30;
