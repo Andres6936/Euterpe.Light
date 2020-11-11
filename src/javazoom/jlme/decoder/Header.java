@@ -335,6 +335,11 @@ public final class Header {
         return ((header >>> 16) & 0b0001) == 0;
     }
 
+    /**
+     * @param header The header information, common to all layers.
+     * @return The bit rate index, the which indicates the total bitrate irrespective of the
+     * mode (stereo, joint_stereo, dual_channel, single_channel).
+     */
     private int getBitRateIndex(final int header) {
         int result = header >>> 12;
         result = result << 28;
