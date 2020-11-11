@@ -303,7 +303,10 @@ public final class Header {
         //  - "00" reserved
         // The bit 14 and 15 have the information of layer.
         int result = header >>> 17;
+        // For get the result in terms of '11', '01', '10', or '00' is needed move bits.
+        // Move 30 bits to left for clear the part left of bits.
         result = result << 30;
+        // Reset the position of bits.
         result = result >>> 30;
 
         if (result == 0b0011) {
