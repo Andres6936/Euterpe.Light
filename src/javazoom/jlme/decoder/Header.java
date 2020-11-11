@@ -26,6 +26,8 @@ package javazoom.jlme.decoder;
 
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
+import java.util.OptionalInt;
 
 /**
  * Description of the Class
@@ -331,6 +333,24 @@ public final class Header {
     private boolean isRedundancyAdded(final int header) {
         // Equals '1' if no redundancy has been added, '0' if redundancy has been added.
         return ((header >>> 16) & 0b0001) == 0;
+    }
+
+    private int getBitRateIndex(final int header) {
+        int result = header >>> 12;
+        result = result << 28;
+        result = result >>> 28;
+
+        try {
+            OptionalInt rateIndex = Layer3.getBitRateIndex(result);
+            if (rateIndex.isPresent()) {
+                return rateIndex.getAsInt();
+            } else {
+                return 0;
+            }
+        } catch (IllegalArgumentException e) {
+            System.err.println("Not is possible determine the bit rate index.");
+            return -1;
+        }
     }
 
     /**
