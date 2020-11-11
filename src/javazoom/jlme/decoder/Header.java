@@ -321,8 +321,16 @@ public final class Header {
         return Layer.RESERVED;
     }
 
+    /**
+     * Indicate whether redundancy has been added in the audio bitstream to facilitate
+     * error detection and concealment.
+     *
+     * @param header The header information, common to all layers.
+     * @return True if bit is '0', false if the bit is '1'
+     */
     private boolean isRedundancyAdded(final int header) {
-        return ((header >>> 16) & 0b0001) == 1;
+        // Equals '1' if no redundancy has been added, '0' if redundancy has been added.
+        return ((header >>> 16) & 0b0001) == 0;
     }
 
     /**
