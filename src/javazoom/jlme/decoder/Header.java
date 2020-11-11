@@ -321,6 +321,10 @@ public final class Header {
         return Layer.RESERVED;
     }
 
+    private boolean isRedundancyAdded(final int header) {
+        return ((header >>> 16) & 0b0001) == 1;
+    }
+
     /**
      * Section 2.4.2.3 Header
      * <p>
@@ -340,6 +344,7 @@ public final class Header {
             System.out.println("SynWord: " + verifySyncWord(headerstring));
             System.out.println("Algorithm: " + verifyAlgorithm(headerstring));
             System.out.println("Layer: " + getLayerUsed(headerstring));
+            System.out.println("Redundancy Added: " + isRedundancyAdded(headerstring));
 
             if (syncmode == BitStream.INITIAL_SYNC) {
                 h_version = ((headerstring >>> 19) & 1);
