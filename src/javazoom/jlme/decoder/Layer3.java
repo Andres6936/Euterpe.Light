@@ -4,7 +4,11 @@ import java.util.OptionalInt;
 
 public class Layer3 {
     public static OptionalInt getBitRateIndex(final int bits) throws IllegalArgumentException {
-        if (bits == 0b0001) {
+        // The all zero value indicates the 'free format' condition, in which a fixed
+        // bitrate which does not need to be in the list can be used.
+        if (bits == 0b0000) {
+            return OptionalInt.empty();
+        } else if (bits == 0b0001) {
             return OptionalInt.of(32);
         } else if (bits == 0b0010) {
             return OptionalInt.of(40);
