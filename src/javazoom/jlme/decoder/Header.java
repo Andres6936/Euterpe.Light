@@ -296,6 +296,12 @@ public final class Header {
      * @return The layer that is used.
      */
     private Layer getLayerUsed(final int header) {
+        // Layer - 2 bits to indicate which layer is used, according to the following table.
+        //  - "11" Layer I
+        //  - "10" Layer II
+        //  - "01" Layer III
+        //  - "00" reserved
+        // The bit 14 and 15 have the information of layer.
         int result = header >>> 17;
         result = result << 30;
         result = result >>> 30;
@@ -308,6 +314,7 @@ public final class Header {
             return Layer.LAYER3;
         }
 
+        // Formally, the last value possible is return the layer Reserved.
         return Layer.RESERVED;
     }
 
