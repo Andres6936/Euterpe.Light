@@ -35,6 +35,13 @@ import java.io.IOException;
  */
 public final class Header {
 
+    private enum Layer {
+        LAYER1,
+        LAYER2,
+        LAYER3,
+        RESERVED,
+    }
+
     public final static int[][] frequencies =
             {{22050, 24000, 16000, 1},
                     {44100, 48000, 32000, 1}};
@@ -282,6 +289,22 @@ public final class Header {
         return ((header >>> 19) & 0b0001) == 1;
     }
 
+    private Layer getLayerUsed(final int header) {
+        int result = header >>> 17;
+        result = result << 30;
+        result = result >>> 30;
+
+        if (result == 0b0011) {
+            return Layer.LAYER1;
+        } else if (result == 0b0010) {
+            return Layer.LAYER2;
+        } else if (result == 0b0001) {
+            return Layer.LAYER3;
+        }
+
+        return Layer.RESERVED;
+    }
+
     /**
      * Section 2.4.2.3 Header
      * <p>
@@ -300,6 +323,7 @@ public final class Header {
             System.out.println("Header String: " + Integer.toBinaryString(headerstring));
             System.out.println("SynWord: " + verifySyncWord(headerstring));
             System.out.println("Algorithm: " + verifyAlgorithm(headerstring));
+            System.out.println("Layer: " + getLayerUsed(headerstring));
 
             if (syncmode == BitStream.INITIAL_SYNC) {
                 h_version = ((headerstring >>> 19) & 1);
