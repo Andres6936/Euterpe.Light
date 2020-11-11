@@ -346,6 +346,8 @@ public final class Header {
         result = result >>> 28;
 
         try {
+            // The bit_rate_index is an index to a table, which is different for the
+            // different Layers.
             OptionalInt rateIndex = Layer3.getBitRateIndex(result);
             if (rateIndex.isPresent()) {
                 return rateIndex.getAsInt();
