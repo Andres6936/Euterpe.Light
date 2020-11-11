@@ -373,6 +373,7 @@ public final class Header {
             System.out.println("Algorithm: " + verifyAlgorithm(headerstring));
             System.out.println("Layer: " + getLayerUsed(headerstring));
             System.out.println("Redundancy Added: " + isRedundancyAdded(headerstring));
+            System.out.println("Bit Rate Index: " + getBitRateIndex(headerstring));
 
             if (syncmode == BitStream.INITIAL_SYNC) {
                 h_version = ((headerstring >>> 19) & 1);
