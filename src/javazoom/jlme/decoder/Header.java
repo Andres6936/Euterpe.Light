@@ -366,13 +366,10 @@ public final class Header {
             return 48f;
         } else if (result == 0b0010) {
             return 32f;
-        } else if (result == 0b0011) {
-            // Reserved
+        } else {
+            // Only value possible: 0b0011: return the sampling frequency Reserved.
             return -1f;
         }
-
-        System.err.println("Not is possible determine the sampling frequency.");
-        return -1f;
     }
 
     /**
@@ -435,11 +432,10 @@ public final class Header {
             return Mode.JOIN_STEREO;
         } else if (result == 0b0010) {
             return Mode.DUAL_CHANNEL;
-        } else if (result == 0b0011) {
+        } else {
+            // Only value possible: 0b0011
             return Mode.SINGLE_CHANNEL;
         }
-
-        throw new IllegalArgumentException("Not is possible determine the mode.");
     }
 
     /**
@@ -457,11 +453,10 @@ public final class Header {
             return 8;
         } else if (result == 0b0010) {
             return 12;
-        } else if (result == 0b0011) {
+        } else {
+            // Only value posssible: 0b0011
             return 16;
         }
-
-        throw new IllegalArgumentException("Not is possible determine the mode extension.");
     }
 
     /**
@@ -497,11 +492,10 @@ public final class Header {
             return Emphasis.MICROSEC_EMPHASIS;
         } else if (result == 0b0010) {
             return Emphasis.RESERVED;
-        } else if (result == 0b0011) {
+        } else {
+            // Only value possible: 0b0011
             return Emphasis.CCITJ_J17;
         }
-
-        throw new IllegalArgumentException("Not is possible determine the emphasis.");
     }
 
     /**
