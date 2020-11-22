@@ -361,6 +361,31 @@ public final class Header {
     }
 
     /**
+     * @param header The header information, common to all layers.
+     * @return the sampling frequency in kHz.
+     * @implNote A reset of the decoder is required to change the sampling rate.
+     */
+    private float getSamplingFrequency(final int header) {
+        int result = header >>> 10;
+        result = result << 30;
+        result = result >>> 30;
+
+        if (result == 0b0000) {
+            return 44.1f;
+        } else if (result == 0b0001) {
+            return 48f;
+        } else if (result == 0b0010) {
+            return 32f;
+        } else if (result == 0b0011) {
+            // Reserved
+            return -1f;
+        }
+
+        System.err.println("Not is possible determine the sampling frequency.");
+        return -1f;
+    }
+
+    /**
      * Section 2.4.2.3 Header
      * <p>
      * The first 32 bits (four bytes) are header information which is common to all layers.
@@ -381,6 +406,7 @@ public final class Header {
             System.out.println("Layer: " + getLayerUsed(headerstring));
             System.out.println("Redundancy Added: " + isRedundancyAdded(headerstring));
             System.out.println("Bit Rate Index: " + getBitRateIndex(headerstring));
+            System.out.println("Sampling Frequency: " + getSamplingFrequency(headerstring));
 
             if (syncmode == BitStream.INITIAL_SYNC) {
                 h_version = ((headerstring >>> 19) & 1);
