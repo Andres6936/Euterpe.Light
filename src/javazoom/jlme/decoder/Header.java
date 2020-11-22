@@ -475,6 +475,16 @@ public final class Header {
     }
 
     /**
+     * @param header The header information, common to all layers.
+     * @return True if is copyright protected, false otherwise.
+     */
+    private boolean isCopyright(final int header) {
+        // If this bit equals '0' there is no copyright on the coded bitstream,
+        // '1' means copyright protected.
+        return ((header >>> 3) & 0b0001) == 1;
+    }
+
+    /**
      * Section 2.4.2.3 Header
      * <p>
      * The first 32 bits (four bytes) are header information which is common to all layers.
@@ -501,6 +511,7 @@ public final class Header {
             System.out.println("Private Bit: " + isPrivateBit(headerstring));
             System.out.println("Mode: " + getMode(headerstring).name());
             System.out.println("Mode Extension: " + getModeExtension(headerstring));
+            System.out.println("Copyright: " + isCopyright(headerstring));
 
             if (syncmode == BitStream.INITIAL_SYNC) {
                 h_version = ((headerstring >>> 19) & 1);
