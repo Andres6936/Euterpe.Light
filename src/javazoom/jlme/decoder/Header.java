@@ -494,6 +494,27 @@ public final class Header {
     }
 
     /**
+     * @param header The header information, common to all layers.
+     * @return the emphasis.
+     */
+    private Emphasis getEmphasis(final int header) {
+        int result = header << 30;
+        result = result >>> 30;
+
+        if (result == 0b0000) {
+            return Emphasis.NO_EMPHASIS;
+        } else if (result == 0b0001) {
+            return Emphasis.MICROSEC_EMPHASIS;
+        } else if (result == 0b0010) {
+            return Emphasis.RESERVED;
+        } else if (result == 0b0011) {
+            return Emphasis.CCITJ_J17;
+        }
+
+        throw new IllegalArgumentException("Not is possible determine the emphasis.");
+    }
+
+    /**
      * Section 2.4.2.3 Header
      * <p>
      * The first 32 bits (four bytes) are header information which is common to all layers.
@@ -522,6 +543,7 @@ public final class Header {
             System.out.println("Mode Extension: " + getModeExtension(headerstring));
             System.out.println("Copyright: " + isCopyright(headerstring));
             System.out.println("Is Original: " + isOriginalOrHome(headerstring));
+            System.out.println("Emphasis: " + getEmphasis(headerstring).name());
 
             if (syncmode == BitStream.INITIAL_SYNC) {
                 h_version = ((headerstring >>> 19) & 1);
