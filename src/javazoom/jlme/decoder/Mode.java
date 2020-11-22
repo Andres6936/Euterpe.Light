@@ -19,6 +19,12 @@ public enum Mode {
      * irrelevance or stereophonic redundancy.
      */
     JOIN_STEREO,
+
+    /**
+     * A mode, where two audio channels with independent programmeme contents
+     * (e.g. bilingual) are encoded within one bit stream. The coding process
+     * is the same as for the stereo mode.
+     */
     DUAL_CHANNEL,
     SINGLE_CHANNEL,
 }
