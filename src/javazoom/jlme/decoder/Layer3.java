@@ -7,6 +7,9 @@ public class Layer3 {
         // The all zero value indicates the 'free format' condition, in which a fixed
         // bitrate which does not need to be in the list can be used.
         if (bits == 0b0000) {
+            // The free format indicate: Any bitrate other than the defined
+            // bitrates that is less than the maximum valid bitrate for each
+            // layer.
             return OptionalInt.empty();
         } else if (bits == 0b0001) {
             return OptionalInt.of(32);
