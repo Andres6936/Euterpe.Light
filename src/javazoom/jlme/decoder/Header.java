@@ -485,6 +485,15 @@ public final class Header {
     }
 
     /**
+     * @param header The header information, common to all layers.
+     * @return True if the bitstream is an original, false otherwise.
+     */
+    private boolean isOriginalOrHome(final int header) {
+        // If this bit equals '0' if the bitstream is a copy, '1' if it is an original
+        return ((header >>> 2) & 0b0001) == 1;
+    }
+
+    /**
      * Section 2.4.2.3 Header
      * <p>
      * The first 32 bits (four bytes) are header information which is common to all layers.
@@ -512,6 +521,7 @@ public final class Header {
             System.out.println("Mode: " + getMode(headerstring).name());
             System.out.println("Mode Extension: " + getModeExtension(headerstring));
             System.out.println("Copyright: " + isCopyright(headerstring));
+            System.out.println("Is Original: " + isOriginalOrHome(headerstring));
 
             if (syncmode == BitStream.INITIAL_SYNC) {
                 h_version = ((headerstring >>> 19) & 1);
