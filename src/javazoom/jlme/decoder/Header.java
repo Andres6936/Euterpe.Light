@@ -431,6 +431,28 @@ public final class Header {
     }
 
     /**
+     * @param header The header information, common to all layers.
+     * @return the mode.
+     */
+    private Mode getMode(final int header) {
+        int result = header >>> 6;
+        result = result << 30;
+        result = result >>> 30;
+
+        if (result == 0b0000) {
+            return Mode.STEREO;
+        } else if (result == 0b0001) {
+            return Mode.JOIN_STEREO;
+        } else if (result == 0b0010) {
+            return Mode.DUAL_CHANNEL;
+        } else if (result == 0b0011) {
+            return Mode.SINGLE_CHANNEL;
+        }
+
+        throw new IllegalArgumentException("Not is possible determine the mode.");
+    }
+
+    /**
      * Section 2.4.2.3 Header
      * <p>
      * The first 32 bits (four bytes) are header information which is common to all layers.
@@ -455,6 +477,7 @@ public final class Header {
             System.out.println("Sampling Frequency: " + getSamplingFrequency(headerstring));
             System.out.println("Padding Bit: " + isPaddingBit(headerstring));
             System.out.println("Private Bit: " + isPrivateBit(headerstring));
+            System.out.println("Mode: " + getMode(headerstring).name());
 
             if (syncmode == BitStream.INITIAL_SYNC) {
                 h_version = ((headerstring >>> 19) & 1);
