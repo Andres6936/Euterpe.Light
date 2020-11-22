@@ -43,11 +43,10 @@ public class Decoder {
     BitReserve.buf_byte_idx = 0;
     BitReserve.offset = 0;
     // End of fix.
-    if (header.layer() == 3) {
+    if (header.getLayer() == Layer.LAYER3) {
       //float scalefactor = 48000.0f;
       float scalefactor = 32700.0f;
       int mode = header.mode();
-      int layer = header.layer();
       int channels = mode == Header.SINGLE_CHANNEL ? 1 : 2;
       output = new SampleBuffer(header.frequency(), channels);
       filter1 = new SynthesisFilter(0, scalefactor);

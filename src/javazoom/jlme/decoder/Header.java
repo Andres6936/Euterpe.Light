@@ -26,7 +26,6 @@ package javazoom.jlme.decoder;
 
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
 import java.util.OptionalInt;
 
 /**
@@ -37,12 +36,7 @@ import java.util.OptionalInt;
  */
 public final class Header {
 
-    private enum Layer {
-        LAYER1,
-        LAYER2,
-        LAYER3,
-        RESERVED,
-    }
+    private Layer layer;
 
     public final static int[][] frequencies =
             {{22050, 24000, 16000, 1},
@@ -178,10 +172,6 @@ public final class Header {
 
     public int version() {
         return h_version;
-    }
-
-    public int layer() {
-        return h_layer;
     }
 
     public int bitrate_index() {
@@ -545,6 +535,8 @@ public final class Header {
             System.out.println("Is Original: " + isOriginalOrHome(headerstring));
             System.out.println("Emphasis: " + getEmphasis(headerstring).name());
 
+            layer = getLayerUsed(headerstring);
+
             if (syncmode == BitStream.INITIAL_SYNC) {
                 h_version = ((headerstring >>> 19) & 1);
                 if ((h_sample_frequency = ((headerstring >>> 10) & 3)) == 3) {
@@ -635,5 +627,11 @@ public final class Header {
         }
 
         framesize -= 4;
+    }
+
+    // Getters
+
+    public Layer getLayer() {
+        return layer;
     }
 }
