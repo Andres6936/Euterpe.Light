@@ -225,6 +225,9 @@ public final class Header {
     }
 
     /**
+     * The rate at which the compressed bit stream is delivered from the
+     * storage medium to the input of a decoder.
+     *
      * @param header The header information, common to all layers.
      * @return The bit rate index, the which indicates the total bitrate irrespective of the
      * mode (stereo, joint_stereo, dual_channel, single_channel).
