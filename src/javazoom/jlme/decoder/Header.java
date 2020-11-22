@@ -148,6 +148,9 @@ public final class Header {
     }
 
     /**
+     * The term 'syncword' is a 12-bit code embedded in the audio bit stream
+     * that identifies the start of a frame.
+     *
      * @param header The header information, common to all layers.
      * @return True if the SyncWord is the bit string '1111 1111 1111'.
      */
