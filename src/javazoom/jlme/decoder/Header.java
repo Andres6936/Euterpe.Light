@@ -421,6 +421,16 @@ public final class Header {
     }
 
     /**
+     * @param header The header information, common to all layers.
+     * @return True if the private bit is present, false otherwise.
+     * @implNote bit for private use. This bit will not be used in the future
+     * by ISO. Reference: ISO 11172-3 Pag. 22 - Section private_bit
+     */
+    private boolean isPrivateBit(final int header) {
+        return ((header >>> 8) & 0b0001) == 1;
+    }
+
+    /**
      * Section 2.4.2.3 Header
      * <p>
      * The first 32 bits (four bytes) are header information which is common to all layers.
@@ -444,6 +454,7 @@ public final class Header {
             System.out.println("Bit Rate Index: " + getBitRateIndex(headerstring));
             System.out.println("Sampling Frequency: " + getSamplingFrequency(headerstring));
             System.out.println("Padding Bit: " + isPaddingBit(headerstring));
+            System.out.println("Private Bit: " + isPrivateBit(headerstring));
 
             if (syncmode == BitStream.INITIAL_SYNC) {
                 h_version = ((headerstring >>> 19) & 1);
