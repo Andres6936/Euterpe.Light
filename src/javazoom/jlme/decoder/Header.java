@@ -604,7 +604,7 @@ public final class Header {
         // End
     }
 
-    private final void calFrameSize() {
+    private void calFrameSize() {
         if (h_version == MPEG1) {
             framesize = (144 * bitrates[h_version][h_layer - 1][h_bitrate_index]) / frequencies[h_version][h_sample_frequency];
         } else {
