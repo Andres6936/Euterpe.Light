@@ -12,6 +12,12 @@ public enum Mode {
      * the dual channel mode.
      */
     STEREO,
+
+    /**
+     * A mode of the audio coding algorithm using joint stereo coding, and the
+     * joint stereo coding [audio]: Any method that exploits stereophonic
+     * irrelevance or stereophonic redundancy.
+     */
     JOIN_STEREO,
     DUAL_CHANNEL,
     SINGLE_CHANNEL,
