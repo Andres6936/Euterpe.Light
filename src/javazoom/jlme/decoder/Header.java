@@ -453,6 +453,28 @@ public final class Header {
     }
 
     /**
+     * @param header The header information, common to all layers.
+     * @return the mode extension.
+     */
+    private int getModeExtension(final int header) {
+        int result = header >>> 4;
+        result = result << 30;
+        result = result >>> 30;
+
+        if (result == 0b0000) {
+            return 4;
+        } else if (result == 0b0001) {
+            return 8;
+        } else if (result == 0b0010) {
+            return 12;
+        } else if (result == 0b0011) {
+            return 16;
+        }
+
+        throw new IllegalArgumentException("Not is possible determine the mode extension.");
+    }
+
+    /**
      * Section 2.4.2.3 Header
      * <p>
      * The first 32 bits (four bytes) are header information which is common to all layers.
@@ -478,6 +500,7 @@ public final class Header {
             System.out.println("Padding Bit: " + isPaddingBit(headerstring));
             System.out.println("Private Bit: " + isPrivateBit(headerstring));
             System.out.println("Mode: " + getMode(headerstring).name());
+            System.out.println("Mode Extension: " + getModeExtension(headerstring));
 
             if (syncmode == BitStream.INITIAL_SYNC) {
                 h_version = ((headerstring >>> 19) & 1);
