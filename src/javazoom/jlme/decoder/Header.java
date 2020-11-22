@@ -386,6 +386,19 @@ public final class Header {
     }
 
     /**
+     * @param header The header information, common to all layers.
+     * @return True if have a frame that contains an additional slot to adjust
+     * the mean bitrate to the sampling frequency.
+     * @implNote Padding is only necessary with a sampling frequency of 44.1kHz.
+     */
+    private boolean isPaddingBit(final int header) {
+        // if this bit equals '1' the frame contains an additional slot to
+        // adjust the mean bitrate to the sampling frequency, otherwise this
+        // bit will be '0'.
+        return ((header >>> 9) & 0b0001) == 1;
+    }
+
+    /**
      * Section 2.4.2.3 Header
      * <p>
      * The first 32 bits (four bytes) are header information which is common to all layers.
@@ -407,6 +420,7 @@ public final class Header {
             System.out.println("Redundancy Added: " + isRedundancyAdded(headerstring));
             System.out.println("Bit Rate Index: " + getBitRateIndex(headerstring));
             System.out.println("Sampling Frequency: " + getSamplingFrequency(headerstring));
+            System.out.println("Padding Bit: " + isPaddingBit(headerstring));
 
             if (syncmode == BitStream.INITIAL_SYNC) {
                 h_version = ((headerstring >>> 19) & 1);
