@@ -269,6 +269,10 @@ public final class Header {
     }
 
     /**
+     * The padding is a method to adjust the average length in time of an audio
+     * frame to the duration of the corresponding PCM samples, by conditionally
+     * adding a slot to the audio frame.
+     *
      * @param header The header information, common to all layers.
      * @return True if have a frame that contains an additional slot to adjust
      * the mean bitrate to the sampling frequency.
