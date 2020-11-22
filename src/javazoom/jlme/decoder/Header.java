@@ -399,6 +399,28 @@ public final class Header {
     }
 
     /**
+     * The ISO 11172-3 say: Padding is only necessary with a sampling frequency
+     * of 44.1kHz.
+     *
+     * @param header The header information, common to all layers.
+     * @return True if the invariant is satisfied, false in otherwise.
+     * @implNote Reference: ISO 11172-3 Pag. 22 - Section padding_bit
+     */
+    private boolean verifyPaddingBitFor44SamplingFrequency(final int header) {
+        // For sampling frequencies different of 44.1 kHz, the padding bit
+        // must be false (it is 0).
+        if (getSamplingFrequency(header) != 44.1f) {
+            // Verify that padding bit is 0 (it is false).
+            // Equivalent to isPaddingBit(...) == false;
+            return !isPaddingBit(header);
+        }
+
+        // The value of padding bit for sampling frequency equal to 44.1 can be
+        // 0 or 1. (it is false or true).
+        return true;
+    }
+
+    /**
      * Section 2.4.2.3 Header
      * <p>
      * The first 32 bits (four bytes) are header information which is common to all layers.
@@ -412,6 +434,7 @@ public final class Header {
 
             assert verifySyncWord(headerstring);
             assert verifyAlgorithm(headerstring);
+            assert verifyPaddingBitFor44SamplingFrequency(headerstring);
 
             System.out.println("Header String: " + Integer.toBinaryString(headerstring));
             System.out.println("SynWord: " + verifySyncWord(headerstring));
