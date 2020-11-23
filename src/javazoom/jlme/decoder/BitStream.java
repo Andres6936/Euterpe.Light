@@ -1,4 +1,4 @@
-/***************************************************************************
+/*
  *  JLayerME is a JAVA library that decodes/plays/converts MPEG 1/2 Layer 3.
  *  Project Homepage: http://www.javazoom.net/javalayer/javalayerme.html.
  *  Copyright (C) JavaZOOM 1999-2005.
@@ -16,10 +16,9 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  License along with this library; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *---------------------------------------------------------------------------
+ *
  */
 package javazoom.jlme.decoder;
-
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -30,14 +29,13 @@ import java.io.InputStream;
  * various decoders. This should be moved into this class and associated inner classes.
  *
  * @author micah
- * @created December 8, 2001
  */
 public final class BitStream {
 
     static final byte INITIAL_SYNC = 0;
     static final byte STRICT_SYNC = 1;
     private final static int BUFFER_INT_SIZE = 433;
-    private final static int bitmask[] = {0,
+    private final static int[] bitmask = {0,
             0x00000001, 0x00000003, 0x00000007, 0x0000000F,
             0x0000001F, 0x0000003F, 0x0000007F, 0x000000FF,
             0x000001FF, 0x000003FF, 0x000007FF, 0x00000FFF,
@@ -53,7 +51,9 @@ public final class BitStream {
     private static int syncword;
     private static boolean single_ch_mode;
     private final static Header header = new Header();
-    private final static byte syncbuf[] = new byte[4];
+    private final static byte[] syncbuf = new byte[4];
+
+    static boolean sync;
 
     /**
      * Representation in bytes of mp3.
@@ -74,7 +74,7 @@ public final class BitStream {
         if ((read = source.read(syncbuf, 0, 4)) > 0) {  //if(read>=0){
             source.unread(syncbuf, 0, read);
             if (read == 4) {
-                headerstring = ((syncbuf[0] << 24) & 0xFF000000) | ((syncbuf[1] << 16) & 0x00FF0000) | ((syncbuf[2] << 8) & 0x0000FF00) | ((syncbuf[3] << 0) & 0x000000FF);
+                headerstring = ((syncbuf[0] << 24) & 0xFF000000) | ((syncbuf[1] << 16) & 0x00FF0000) | ((syncbuf[2] << 8) & 0x0000FF00) | ((syncbuf[3]) & 0x000000FF);
                 return isSyncMark(headerstring, syncmode, syncword);
             }
         }
@@ -105,8 +105,6 @@ public final class BitStream {
      * @param word          Description of Parameter
      * @return The syncMark value
      */
-    static boolean sync;
-
     public final boolean isSyncMark(int headerstring, int syncmode, int word) {
         if (syncmode == INITIAL_SYNC) {
             sync = ((headerstring & 0xFFF00000) == 0xFFF00000);
@@ -199,7 +197,7 @@ public final class BitStream {
         if ((bytesread = source.read(syncbuf, 0, 3)) != 3)
             return -1;
 
-        headerstring = syncbuf[0] << 16 & 0xff0000 | syncbuf[1] << 8 & 0xff00 | syncbuf[2] << 0 & 0xff;
+        headerstring = syncbuf[0] << 16 & 0xff0000 | syncbuf[1] << 8 & 0xff00 | syncbuf[2] & 0xff;
 
         do {
             headerstring <<= 8;
