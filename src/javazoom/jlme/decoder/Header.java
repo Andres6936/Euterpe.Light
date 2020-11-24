@@ -515,6 +515,22 @@ public final class Header {
         // End
     }
 
+    /**
+     * All MP3 files are divided into smaller fragments called frames. Each
+     * frame stores 1152 audio samples and lasts for 26 ms. This means that the
+     * frame rate will be around 38 fps. In addition a frame is subdivided into
+     * two granules each containing 576 samples. Since the bitrate determines
+     * the size of each sample, increasing the bitrate will also increase the
+     * size of the frame. The size is also depending on the sampling frequency
+     * according to following formula:
+     * <p>
+     * (144 * bitrate / sampleFrequency) + padding [bytes]
+     * <p>
+     * Padding refers to a special bit allocated in the beginning of the frame.
+     * It is used in some frames to exactly satisfy the bitrate requirements.
+     * If the padding bit is set the frame is padded with 1 byte. Note that the
+     * frame size is an integer: Ex: 144*128000/44100 = 417
+     */
     private void calFrameSize() {
         if (h_version == MPEG1) {
             framesize = (144 * bitrates[h_version][h_layer - 1][h_bitrate_index]) / frequencies[h_version][h_sample_frequency];
