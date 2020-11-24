@@ -35,7 +35,20 @@ import java.util.OptionalInt;
  */
 public final class Header {
 
+    /**
+     * The algorithm used.
+     */
     private Layer layer;
+
+    /**
+     * The bitrate index in hz.
+     */
+    private int bitrate = 0;
+
+    /**
+     * The sampling frequency in hz.
+     */
+    private int sampleFrequency = 0;
 
     public final static int[][] frequencies =
             {{22050, 24000, 16000, 1},
@@ -229,7 +242,7 @@ public final class Header {
      * storage medium to the input of a decoder.
      *
      * @param header The header information, common to all layers.
-     * @return The bit rate index, the which indicates the total bitrate irrespective of the
+     * @return The bit rate index in kHz, the which indicates the total bitrate irrespective of the
      * mode (stereo, joint_stereo, dual_channel, single_channel).
      */
     private int getBitRateIndex(final int header) {
@@ -439,6 +452,8 @@ public final class Header {
             System.out.println("Emphasis: " + getEmphasis(headerstring).name());
 
             layer = getLayerUsed(headerstring);
+            bitrate = getBitRateIndex(headerstring) * 1_000;
+            sampleFrequency = (int) getSamplingFrequency(headerstring) * 1_000;
 
             if (syncmode == BitStream.INITIAL_SYNC) {
                 h_version = ((headerstring >>> 19) & 1);
