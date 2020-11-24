@@ -50,6 +50,11 @@ public final class Header {
      */
     private int sampleFrequency = 0;
 
+    /**
+     * Determine if it present the padding bit.
+     */
+    private boolean paddingBit = false;
+
     public final static int[][] frequencies =
             {{22050, 24000, 16000, 1},
                     {44100, 48000, 32000, 1}};
@@ -456,6 +461,7 @@ public final class Header {
             bitrate = getBitRateIndex(headerstring) * 1_000;
             // Convert the value of kHz to hz.
             sampleFrequency = (int) getSamplingFrequency(headerstring) * 1_000;
+            paddingBit = isPaddingBit(headerstring);
 
             if (syncmode == BitStream.INITIAL_SYNC) {
                 h_version = ((headerstring >>> 19) & 1);
@@ -550,12 +556,11 @@ public final class Header {
      */
     private void calFrameSize() {
         if (h_version == MPEG1) {
-            framesize = (144 * bitrate) / sampleFrequency;
+            framesize = (144 * bitrate / sampleFrequency) + (paddingBit ? 1 : 0);
         } else {
-            framesize = (144 * bitrates[h_version][h_layer - 1][h_bitrate_index]) / (frequencies[h_version][h_sample_frequency] << 1);
+            // For support MPEG 2
+            framesize = ((144 * bitrates[h_version][h_layer - 1][h_bitrate_index]) / (frequencies[h_version][h_sample_frequency] << 1)) + (paddingBit ? 1 : 0);
         }
-        if (h_padding_bit != 0)
-            framesize++;
 
         if (h_version == MPEG1) {
             // E.B Fix
