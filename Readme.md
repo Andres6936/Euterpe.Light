@@ -41,3 +41,9 @@
 
 - How to get ID3v1 or ID3v2 tags from Euterpe.Light API ?
   The API doesn't provide this feature. Use JLayer classic instead.
+
+### Run with JetBrains IDE
+
+Is important to enable the assertions
+
+- VM Options: -ea:$FileDirRelativeToSourcepath$...
