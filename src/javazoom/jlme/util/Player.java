@@ -40,12 +40,9 @@ public class Player {
     private static SourceDataLine line;
     private final BitStream bitstream;
     private boolean playable = true;
-    //Runtime rt = null;
-
 
     public Player(InputStream stream) {
         bitstream = new BitStream(stream);
-        //rt = Runtime.getRuntime();
     }
 
 
@@ -115,7 +112,7 @@ public class Player {
                 SampleBuffer output = decoder.decodeFrame();
                 length = output.size();
                 if (length == 0) break;
-                //{
+
                 if (first) {
                     first = false;
                     System.out.println("frequency: " + decoder.getOutputFrequency() + ", channels: " + decoder.getOutputChannels());
@@ -124,10 +121,7 @@ public class Player {
                 line.write(output.getBuffer(), 0, length);
                 bitstream.closeFrame();
                 header = bitstream.readFrame();
-                //System.out.println("Mem:"+(rt.totalMemory() - rt.freeMemory())+"/"+rt.totalMemory());
-                //}
             } catch (Exception e) {
-                //e.printStackTrace();
                 break;
             }
         }
