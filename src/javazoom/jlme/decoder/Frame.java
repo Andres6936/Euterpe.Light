@@ -6,7 +6,37 @@ import java.util.OptionalInt;
 
 public class Frame {
 
-    public Frame(BufferedInputStream buffer) {
+    /**
+     * The algorithm used.
+     */
+    private Layer layer;
+
+    /**
+     * The bitrate index in hz.
+     */
+    private int bitrate = 0;
+
+    /**
+     * The sampling frequency in hz.
+     */
+    private int sampleFrequency = 0;
+
+    /**
+     * The size of each frame when is compressed.
+     */
+    private int frameLengthInBytes = 0;
+
+    /**
+     * Determine if it present the padding bit.
+     */
+    private boolean paddingBit = false;
+
+    /**
+     * Buffer that store the data frame.
+     */
+    private final byte[] dataFrame;
+
+    public Frame(BufferedInputStream buffer) throws IOException {
         int headerString = getHeader(buffer);
 
         assert verifySyncWord(headerString);
@@ -27,6 +57,18 @@ public class Frame {
         System.out.println("Copyright: " + isCopyright(headerString));
         System.out.println("Is Original: " + isOriginalOrHome(headerString));
         System.out.println("Emphasis: " + getEmphasis(headerString).name());
+
+        layer = getLayerUsed(headerString);
+        // Convert the value of kHz to hz.
+        bitrate = getBitRateIndex(headerString) * 1_000;
+        // Convert the value of kHz to hz.
+        sampleFrequency = (int) getSamplingFrequency(headerString) * 1_000;
+        paddingBit = isPaddingBit(headerString);
+
+        determineFrameLengthInBytes();
+
+        dataFrame = new byte[frameLengthInBytes];
+        assert buffer.read(dataFrame, 0, frameLengthInBytes) == frameLengthInBytes;
     }
 
     /**
@@ -302,5 +344,32 @@ public class Frame {
             // Only value possible: 0b0011
             return Emphasis.CCITJ_J17;
         }
+    }
+
+    /**
+     * All MP3 files are divided into smaller fragments called frames. Each
+     * frame stores 1152 audio samples and lasts for 26 ms. This means that the
+     * frame rate will be around 38 fps. In addition a frame is subdivided into
+     * two granules each containing 576 samples. Since the bitrate determines
+     * the size of each sample, increasing the bitrate will also increase the
+     * size of the frame. The size is also depending on the sampling frequency
+     * according to following formula:
+     * <p><br>
+     * <p>
+     * (144 * bitrate / sampleFrequency) + padding [bytes]
+     * <p><br>
+     * <p>
+     * Padding refers to a special bit allocated in the beginning of the frame.
+     * It is used in some frames to exactly satisfy the bitrate requirements.
+     * If the padding bit is set the frame is padded with 1 byte. Note that the
+     * frame size is an integer: Ex: 144*128000/44100 = 417
+     * <br><br>
+     * <p>
+     * - Precondition: The format is MPEG 1 Layer 3.
+     *
+     * @apiNote Only support to MPEG 1 Layer 3.
+     */
+    private void determineFrameLengthInBytes() {
+        frameLengthInBytes = (144 * bitrate / sampleFrequency) + (paddingBit ? 1 : 0);
     }
 }
