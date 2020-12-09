@@ -176,7 +176,7 @@ public final class BitStream {
     }
 
     private void readHeaders() {
-        final int frameSize = header.getFrameSize();
+        final int frameSize = header.getFrameLengthInBytes();
         ArrayList<Frame> frames = new ArrayList<>();
         try {
             assert bufferCopy.skip(112) == 112;
