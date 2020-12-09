@@ -4,7 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 
 public class TagReader {
-    public int readTag(BufferedInputStream buffer) throws IOException {
+    public int readTagAndReturnSize(BufferedInputStream buffer) throws IOException {
         int totalBytesRead = 0;
         byte[] header = new byte[10];
         totalBytesRead += buffer.read(header, 0, 10);
@@ -15,8 +15,7 @@ public class TagReader {
         size[1] = header[7];
         size[2] = header[8];
         size[3] = header[9];
-        assert verifySize(size);
-        return totalBytesRead;
+        return getSizeTag(size);
     }
 
     private void verifyHeader(final byte[] header) {
@@ -31,12 +30,12 @@ public class TagReader {
         return true;
     }
 
-    private boolean verifySize(final byte[] size) {
+    private int getSizeTag(final byte[] size) {
         assert size.length == 4;
         System.out.println("Size[0]: " + Integer.toBinaryString(size[0]));
         System.out.println("Size[1]: " + Integer.toBinaryString(size[1]));
         System.out.println("Size[2]: " + Integer.toBinaryString(size[2]));
         System.out.println("Size[3]: " + Integer.toBinaryString(size[3]));
-        return true;
+        return (size[0] << 24) + (size[1] << 16) + (size[2] << 8) + size[3];
     }
 }
