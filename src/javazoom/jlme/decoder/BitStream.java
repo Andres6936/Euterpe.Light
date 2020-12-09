@@ -220,16 +220,19 @@ public final class BitStream {
     static int headerstring;
 
     int findAndReturnSyncHeader(byte syncmode) throws IOException {
-        if (source.read(syncbuf, 0, 3) != 3)
+        byte[] buffer = new byte[4];
+
+        if (source.read(buffer, 0, 3) != 3)
             return -1;
 
-        headerstring = syncbuf[0] << 16 & 0xff0000 | syncbuf[1] << 8 & 0xff00 | syncbuf[2] & 0xff;
+        headerstring = buffer[0] << 16 & 0xff0000 | buffer[1] << 8 & 0xff00 | buffer[2] & 0xff;
 
         do {
             headerstring <<= 8;
-            if (source.read(syncbuf, 3, 1) != 1)
+            if (source.read(buffer, 3, 1) != 1) {
                 return -1;
-            headerstring |= syncbuf[3] & 0xff;
+            }
+            headerstring |= buffer[3] & 0xff;
         } while (!isSyncMark(headerstring, syncmode, syncword));
 
         return headerstring;
