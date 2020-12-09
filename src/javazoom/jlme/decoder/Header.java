@@ -553,22 +553,14 @@ public final class Header {
      * It is used in some frames to exactly satisfy the bitrate requirements.
      * If the padding bit is set the frame is padded with 1 byte. Note that the
      * frame size is an integer: Ex: 144*128000/44100 = 417
+     *
+     * @apiNote Only support to MPEG 1 Layer 3
      */
     private void calFrameSize() {
-        if (h_version == MPEG1) {
-            framesize = (144 * bitrate / sampleFrequency) + (paddingBit ? 1 : 0);
-        } else {
-            // For support MPEG 2
-            framesize = ((144 * bitrates[h_version][h_layer - 1][h_bitrate_index]) / (frequencies[h_version][h_sample_frequency] << 1)) + (paddingBit ? 1 : 0);
-        }
+        framesize = (144 * bitrate / sampleFrequency) + (paddingBit ? 1 : 0);
+        nSlots = framesize - ((h_mode == SINGLE_CHANNEL) ? 17 : 32) - ((h_protection_bit != 0) ? 0 : 2) - 4;
 
-        if (h_version == MPEG1) {
-            // E.B Fix
-            nSlots = framesize - ((h_mode == SINGLE_CHANNEL) ? 17 : 32) - ((h_protection_bit != 0) ? 0 : 2) - 4;
-        } else {
-            nSlots = framesize - ((h_mode == SINGLE_CHANNEL) ? 9 : 17) - ((h_protection_bit != 0) ? 0 : 2) - 4;
-        }
-
+        // Rest 4 bytes of the header
         framesize -= 4;
     }
 
