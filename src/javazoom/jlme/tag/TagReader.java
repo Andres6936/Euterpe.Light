@@ -5,9 +5,9 @@ import java.io.IOException;
 
 public class TagReader {
 
-    private byte[] dataTag;
+    private final byte[] dataTag;
 
-    public int readTag(BufferedInputStream buffer) throws IOException {
+    public TagReader(BufferedInputStream buffer) throws IOException {
         int totalBytesRead = 0;
         byte[] header = new byte[10];
         totalBytesRead += buffer.read(header, 0, 10);
@@ -21,8 +21,9 @@ public class TagReader {
         int sizeTag = getSizeTag(size);
         dataTag = new byte[sizeTag];
         totalBytesRead += buffer.read(dataTag, 0, sizeTag);
-        return totalBytesRead;
+        assert totalBytesRead == sizeTag + 10;
     }
+
 
     private void verifyHeader(final byte[] header) {
         assert header.length == 10;
