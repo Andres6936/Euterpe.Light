@@ -546,15 +546,20 @@ public final class Header {
      * the size of each sample, increasing the bitrate will also increase the
      * size of the frame. The size is also depending on the sampling frequency
      * according to following formula:
+     * <p><br>
      * <p>
      * (144 * bitrate / sampleFrequency) + padding [bytes]
+     * <p><br>
      * <p>
      * Padding refers to a special bit allocated in the beginning of the frame.
      * It is used in some frames to exactly satisfy the bitrate requirements.
      * If the padding bit is set the frame is padded with 1 byte. Note that the
      * frame size is an integer: Ex: 144*128000/44100 = 417
+     * <br><br>
+     * <p>
+     * - Precondition: The format is MPEG 1 Layer 3.
      *
-     * @apiNote Only support to MPEG 1 Layer 3
+     * @apiNote Only support to MPEG 1 Layer 3.
      */
     private void calFrameSize() {
         framesize = (144 * bitrate / sampleFrequency) + (paddingBit ? 1 : 0);
