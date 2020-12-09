@@ -9,6 +9,13 @@ public class TagReader {
         byte[] header = new byte[10];
         totalBytesRead += buffer.read(header, 0, 10);
         verifyHeader(header);
+        // Create a new array with the four bytes of size
+        byte[] size = new byte[4];
+        size[0] = header[6];
+        size[1] = header[7];
+        size[2] = header[8];
+        size[3] = header[9];
+        assert verifySize(size);
         return totalBytesRead;
     }
 
@@ -17,13 +24,6 @@ public class TagReader {
         assert header[0] == 'I' && header[1] == 'D' && header[2] == '3';
         assert header[3] == 3 && header[4] == 0;
         assert verifyFlags(header[5]);
-        // Create a new array with the four bytes of size
-        byte[] size = new byte[4];
-        size[0] = header[6];
-        size[1] = header[7];
-        size[2] = header[8];
-        size[3] = header[9];
-        assert verifySize(size);
     }
 
     private boolean verifyFlags(final byte flags) {
