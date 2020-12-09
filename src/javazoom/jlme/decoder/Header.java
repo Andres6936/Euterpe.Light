@@ -51,6 +51,11 @@ public final class Header {
     private int sampleFrequency = 0;
 
     /**
+     * The size of each frame.
+     */
+    private int frameSize = 0;
+
+    /**
      * Determine if it present the padding bit.
      */
     private boolean paddingBit = false;
@@ -89,8 +94,6 @@ public final class Header {
      */
     public final static int THIRTYTWO = 2;
 
-
-    public static int framesize;
     public static int nSlots;
     private static int h_layer, h_protection_bit, h_bitrate_index, h_padding_bit, h_mode_extension;
     private static int h_version;
@@ -475,7 +478,7 @@ public final class Header {
             // calculate framesize and nSlots
             calFrameSize();
             // read framedata: Rest the 4 bytes of header
-            stream.read_frame_data(framesize - 4);
+            stream.read_frame_data(frameSize - 4);
             if (stream.isSyncCurrentPosition(syncmode)) {
                 if (syncmode == BitStream.INITIAL_SYNC) {
                     syncmode = BitStream.STRICT_SYNC;
@@ -520,14 +523,14 @@ public final class Header {
      * @apiNote Only support to MPEG 1 Layer 3.
      */
     private void calFrameSize() {
-        framesize = (144 * bitrate / sampleFrequency) + (paddingBit ? 1 : 0);
-        nSlots = framesize - ((h_mode == SINGLE_CHANNEL) ? 17 : 32) - ((h_protection_bit != 0) ? 0 : 2) - 4;
+        frameSize = (144 * bitrate / sampleFrequency) + (paddingBit ? 1 : 0);
+        nSlots = frameSize - ((h_mode == SINGLE_CHANNEL) ? 17 : 32) - ((h_protection_bit != 0) ? 0 : 2) - 4;
     }
 
     // Getters
 
     public int getFrameSize() {
-        return framesize;
+        return frameSize;
     }
 
     public Layer getLayer() {
