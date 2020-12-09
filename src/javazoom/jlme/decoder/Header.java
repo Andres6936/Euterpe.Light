@@ -476,7 +476,7 @@ public final class Header {
                 h_intensity_stereo_bound = h_number_of_subbands;
             }
             // calculate framesize and nSlots
-            calFrameSize();
+            determineFrameLengthInBytes();
             // read framedata: Rest the 4 bytes of header
             stream.read_frame_data(frameLengthInBytes - 4);
             if (stream.isSyncCurrentPosition(syncmode)) {
@@ -522,7 +522,7 @@ public final class Header {
      *
      * @apiNote Only support to MPEG 1 Layer 3.
      */
-    private void calFrameSize() {
+    private void determineFrameLengthInBytes() {
         frameLengthInBytes = (144 * bitrate / sampleFrequency) + (paddingBit ? 1 : 0);
         nSlots = frameLengthInBytes - ((h_mode == SINGLE_CHANNEL) ? 17 : 32) - ((h_protection_bit != 0) ? 0 : 2) - 4;
     }
