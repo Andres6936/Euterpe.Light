@@ -173,13 +173,15 @@ public final class BitStream {
         final int frameSize = header.getFrameSize();
         ArrayList<Frame> frames = new ArrayList<>();
         try {
-            System.out.println("Available: " + bufferByte.available());
-            while (bufferByte.available() > 0) {
-                frames.add(new Frame(bufferByte.readNBytes(frameSize)));
+            assert bufferCopy.skip(112) == 112;
+            System.out.println("Available: " + bufferCopy.available());
+            while (bufferCopy.available() > 0) {
+                frames.add(new Frame(bufferCopy.readNBytes(frameSize)));
             }
         } catch (IOException exception) {
             System.out.println("Frame not is possible read bytes.");
         }
+        assert frames.size() == 758;
     }
 
     /**
