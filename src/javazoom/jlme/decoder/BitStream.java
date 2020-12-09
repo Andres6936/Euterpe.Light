@@ -20,6 +20,8 @@
  */
 package javazoom.jlme.decoder;
 
+import javazoom.jlme.tag.TagReader;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -66,6 +68,12 @@ public final class BitStream {
     public BitStream(InputStream in, InputStream copy) {
         bufferByte = new BufferedInputStream(in);
         bufferCopy = new BufferedInputStream(copy);
+
+        try {
+            TagReader tagReader = new TagReader(bufferCopy);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         source = new PushBackStream(in, 512);
         closeFrame();
@@ -179,8 +187,8 @@ public final class BitStream {
         final int frameSize = header.getFrameLengthInBytes();
         ArrayList<Frame> frames = new ArrayList<>();
         try {
-            assert bufferCopy.skip(112) == 112;
-            System.out.println("Available: " + bufferCopy.available());
+            // The total of frames in the audio should be a number divisible
+            assert bufferCopy.available() % frameSize == 0;
             while (bufferCopy.available() > 0) {
                 frames.add(new Frame(bufferCopy.readNBytes(frameSize)));
             }
