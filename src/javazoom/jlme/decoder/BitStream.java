@@ -219,11 +219,12 @@ public final class BitStream {
 
     static int headerstring;
 
-    int findAndReturnSyncHeader(byte syncmode) throws IOException {
+    public int findAndReturnSyncHeader(byte syncmode) throws IOException {
         byte[] buffer = new byte[4];
 
-        if (source.read(buffer, 0, 3) != 3)
+        if (source.read(buffer, 0, 3) != 3) {
             return -1;
+        }
 
         headerstring = buffer[0] << 16 & 0xff0000 | buffer[1] << 8 & 0xff00 | buffer[2] & 0xff;
 
