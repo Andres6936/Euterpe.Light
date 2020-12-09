@@ -478,7 +478,7 @@ public final class Header {
             // calculate framesize and nSlots
             determineFrameLengthInBytes();
             // read framedata: Rest the 4 bytes of header
-            stream.read_frame_data(frameLengthInBytes - 4);
+            stream.readFrameData(frameLengthInBytes - 4);
             if (stream.isSyncCurrentPosition(syncmode)) {
                 if (syncmode == BitStream.INITIAL_SYNC) {
                     syncmode = BitStream.STRICT_SYNC;

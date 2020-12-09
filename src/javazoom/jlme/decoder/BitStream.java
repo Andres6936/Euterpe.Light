@@ -238,15 +238,14 @@ public final class BitStream {
     /**
      * Reads the data for the next frame. The frame is not parsed until parse frame is called.
      *
-     * @param bytesize Description of Parameter
+     * @param frameLength Description of Parameter
      * @throws IOException Description of Exception
      */
-    final void read_frame_data(int bytesize) throws IOException {
-        if (bytesize >= 0) {
-            framesize = bytesize;
-            wordpointer = bitindex = -1;
-            source.read(frame_bytes, 0, bytesize);
-        }
+    final void readFrameData(final int frameLength) throws IOException {
+        assert frameLength > 0;
+        framesize = frameLength;
+        wordpointer = bitindex = -1;
+        source.read(frame_bytes, 0, frameLength);
     }
 
     static int b, k;
