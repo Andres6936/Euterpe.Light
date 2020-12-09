@@ -184,18 +184,16 @@ public final class BitStream {
     }
 
     private void readHeaders() {
-        final int frameSize = header.getFrameLengthInBytes();
         ArrayList<Frame> frames = new ArrayList<>();
         try {
-            // The total of frames in the audio should be a number divisible
-            assert bufferCopy.available() % frameSize == 0;
             while (bufferCopy.available() > 0) {
-                frames.add(new Frame(bufferCopy.readNBytes(frameSize)));
+                frames.add(new Frame(bufferCopy));
             }
         } catch (IOException exception) {
             System.out.println("Frame not is possible read bytes.");
         }
-        assert frames.size() == 758;
+
+        System.out.println("Number of frames: " + frames.size());
     }
 
     /**
