@@ -516,8 +516,8 @@ public final class Header {
             }
             // calculate framesize and nSlots
             calFrameSize();
-            // read framedata:
-            stream.read_frame_data(framesize);
+            // read framedata: Rest the 4 bytes of header
+            stream.read_frame_data(framesize - 4);
             if (stream.isSyncCurrentPosition(syncmode)) {
                 if (syncmode == BitStream.INITIAL_SYNC) {
                     syncmode = BitStream.STRICT_SYNC;
@@ -564,15 +564,12 @@ public final class Header {
     private void calFrameSize() {
         framesize = (144 * bitrate / sampleFrequency) + (paddingBit ? 1 : 0);
         nSlots = framesize - ((h_mode == SINGLE_CHANNEL) ? 17 : 32) - ((h_protection_bit != 0) ? 0 : 2) - 4;
-
-        // Rest 4 bytes of the header
-        framesize -= 4;
     }
 
     // Getters
 
     public int getFrameSize() {
-        return framesize + 4;
+        return framesize;
     }
 
     public Layer getLayer() {
