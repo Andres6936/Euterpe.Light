@@ -574,6 +574,10 @@ public final class Header {
 
     // Getters
 
+    public int getFrameSize() {
+        return framesize + 4;
+    }
+
     public Layer getLayer() {
         return layer;
     }

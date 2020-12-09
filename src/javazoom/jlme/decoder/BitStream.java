@@ -23,6 +23,7 @@ package javazoom.jlme.decoder;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 /**
  * The <code>Bistream</code> class is responsible for parsing an MPEG audio bitstream. <b>REVIEW:</b> much of the parsing currently occurs in the
@@ -161,7 +162,21 @@ public final class BitStream {
         //if (framesize == -1) {
         header.read_header(this);
         //}
+        readHeaders();
         return header;
+    }
+
+    private void readHeaders() {
+        final int frameSize = header.getFrameSize();
+        ArrayList<Frame> frames = new ArrayList<>();
+        try {
+            System.out.println("Available: " + bufferByte.available());
+            while (bufferByte.available() > 0) {
+                frames.add(new Frame(bufferByte.readNBytes(frameSize)));
+            }
+        } catch (IOException exception) {
+            System.out.println("Frame not is possible read bytes.");
+        }
     }
 
     /**
