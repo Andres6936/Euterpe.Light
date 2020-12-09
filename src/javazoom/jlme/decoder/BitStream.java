@@ -206,10 +206,10 @@ public final class BitStream {
         single_ch_mode = ((syncword0 & 0x000000C0) == 0x000000C0);
     }
 
-    static int bytesread, headerstring;
+    static int headerstring;
 
     int syncHeader(byte syncmode) throws IOException {
-        if ((bytesread = source.read(syncbuf, 0, 3)) != 3)
+        if (source.read(syncbuf, 0, 3) != 3)
             return -1;
 
         headerstring = syncbuf[0] << 16 & 0xff0000 | syncbuf[1] << 8 & 0xff00 | syncbuf[2] & 0xff;
