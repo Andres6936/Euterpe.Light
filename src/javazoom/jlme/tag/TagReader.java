@@ -4,7 +4,10 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 
 public class TagReader {
-    public int readTagAndReturnSize(BufferedInputStream buffer) throws IOException {
+
+    private byte[] dataTag;
+
+    public int readTag(BufferedInputStream buffer) throws IOException {
         int totalBytesRead = 0;
         byte[] header = new byte[10];
         totalBytesRead += buffer.read(header, 0, 10);
@@ -15,7 +18,10 @@ public class TagReader {
         size[1] = header[7];
         size[2] = header[8];
         size[3] = header[9];
-        return getSizeTag(size);
+        int sizeTag = getSizeTag(size);
+        dataTag = new byte[sizeTag];
+        totalBytesRead += buffer.read(dataTag, 0, sizeTag);
+        return totalBytesRead;
     }
 
     private void verifyHeader(final byte[] header) {
