@@ -396,7 +396,7 @@ public final class Header {
         int channel_bitrate;
         boolean sync = false;
         do {
-            headerstring = stream.syncHeader(syncmode);
+            headerstring = stream.findAndReturnSyncHeader(syncmode);
 
             assert verifySyncWord(headerstring);
             assert verifyAlgorithm(headerstring);

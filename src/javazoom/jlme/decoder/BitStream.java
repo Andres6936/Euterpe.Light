@@ -219,7 +219,7 @@ public final class BitStream {
 
     static int headerstring;
 
-    int syncHeader(byte syncmode) throws IOException {
+    int findAndReturnSyncHeader(byte syncmode) throws IOException {
         if (source.read(syncbuf, 0, 3) != 3)
             return -1;
 
