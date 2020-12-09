@@ -51,7 +51,7 @@ public final class Header {
     private int sampleFrequency = 0;
 
     /**
-     * The size of each frame.
+     * The size of each frame when is compressed.
      */
     private int frameLengthInBytes = 0;
 
