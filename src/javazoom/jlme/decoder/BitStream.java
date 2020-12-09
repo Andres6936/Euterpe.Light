@@ -61,9 +61,12 @@ public final class BitStream {
      */
     private final BufferedInputStream bufferByte;
 
+    private final BufferedInputStream bufferCopy;
 
-    public BitStream(InputStream in) {
+    public BitStream(InputStream in, InputStream copy) {
         bufferByte = new BufferedInputStream(in);
+        bufferCopy = new BufferedInputStream(copy);
+
         source = new PushBackStream(in, 512);
         closeFrame();
         Header.syncmode = INITIAL_SYNC;

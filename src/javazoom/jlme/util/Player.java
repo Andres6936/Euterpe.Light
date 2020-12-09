@@ -41,8 +41,8 @@ public class Player {
     private final BitStream bitstream;
     private boolean playable = true;
 
-    public Player(InputStream stream) {
-        bitstream = new BitStream(stream);
+    public Player(InputStream stream, InputStream copy) {
+        bitstream = new BitStream(stream, copy);
     }
 
 
@@ -76,7 +76,8 @@ public class Player {
             if (file.equalsIgnoreCase("-url")) {
                 if (args.length > 1) {
                     URL u = new URL(args[1]);
-                    Player player = new Player(new BufferedInputStream(u.openStream(), 2048));
+                    Player player = new Player(new BufferedInputStream(u.openStream(), 2048),
+                            new BufferedInputStream(u.openStream(), 2048));
                     System.out.println("starting");
                     player.play();
                     System.out.println("ending");
@@ -85,7 +86,8 @@ public class Player {
                 }
             } else {
                 // Test: Available: 764176
-                Player player = new Player(new BufferedInputStream(new FileInputStream(file), 2048));
+                Player player = new Player(new BufferedInputStream(new FileInputStream(file), 2048),
+                        new BufferedInputStream(new FileInputStream(file), 2048));
                 System.out.println("starting");
                 player.play();
                 System.out.println("ending");
