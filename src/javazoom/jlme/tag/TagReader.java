@@ -27,10 +27,16 @@ public class TagReader {
     }
 
     private boolean verifyFlags(final byte flags) {
-
+        System.out.println("Flags: " + Integer.toBinaryString(flags));
+        return true;
     }
 
     private boolean verifySize(final byte[] size) {
         assert size.length == 4;
+        System.out.println("Size[0]: " + Integer.toBinaryString(size[0]));
+        System.out.println("Size[1]: " + Integer.toBinaryString(size[1]));
+        System.out.println("Size[2]: " + Integer.toBinaryString(size[2]));
+        System.out.println("Size[3]: " + Integer.toBinaryString(size[3]));
+        return true;
     }
 }
