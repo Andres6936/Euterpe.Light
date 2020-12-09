@@ -155,6 +155,8 @@ public final class BitStream {
         source.close();
     }
 
+    static boolean readOnlyOnce = false;
+
     /**
      * Reads and parses the next frame from the input source.
      *
@@ -165,7 +167,11 @@ public final class BitStream {
         //if (framesize == -1) {
         header.read_header(this);
         //}
-        readHeaders();
+        if (!readOnlyOnce) {
+            readHeaders();
+            readOnlyOnce = true;
+        }
+
         return header;
     }
 
