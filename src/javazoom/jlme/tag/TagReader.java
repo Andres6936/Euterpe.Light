@@ -21,6 +21,11 @@ public class TagReader {
 
     private final byte[] dataTag;
 
+    /**
+     * @param buffer Buffer of bytes, that store the bytes of audio file.
+     * @throws IOException If not is possible access to file or is produced
+     *                     an error of read.
+     */
     public TagReader(BufferedInputStream buffer) throws IOException {
         int totalBytesRead = 0;
         // The ID3v2 tag header, which should be the first information in the
