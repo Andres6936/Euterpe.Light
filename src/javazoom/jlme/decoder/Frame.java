@@ -9,22 +9,22 @@ public class Frame {
     /**
      * The algorithm used.
      */
-    private Layer layer;
+    private final Layer layer;
 
     /**
      * The bitrate index in hz.
      */
-    private int bitrate = 0;
+    private final int bitrate;
 
     /**
      * The sync word or header string.
      */
-    private int headerString = 0;
+    private final int headerString;
 
     /**
      * The sampling frequency in hz.
      */
-    private int sampleFrequency = 0;
+    private final int sampleFrequency;
 
     /**
      * The size of each frame when is compressed.
@@ -34,7 +34,7 @@ public class Frame {
     /**
      * Determine if it present the padding bit.
      */
-    private boolean paddingBit = false;
+    private final boolean paddingBit;
 
     /**
      * Buffer that store the data frame.
