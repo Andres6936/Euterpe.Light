@@ -773,6 +773,17 @@ final class LayerIIIDecoder {
      * Reads the side info from the stream, assuming the entire. frame has been
      * read already. Mono : 136 bits (= 17 bytes) Stereo : 256 bits (= 32
      * bytes)
+     * <br><br>
+     * <p>
+     * Side information can either be 17 bytes if it is a single channel or 32 bytes if
+     * it is a dual channel. Side information always immediately follows the
+     * header. Basically, it contains all the relevant information to decode the main
+     * data.
+     * <br><br>
+     * <p>
+     * For example it contains the main data begin pointer, scale factor
+     * selection information, Huffman table information for both the granules etc.
+     * <br><br>
      *
      * @return Description of the Returned Value
      */
