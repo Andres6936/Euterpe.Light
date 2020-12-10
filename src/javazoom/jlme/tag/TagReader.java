@@ -70,11 +70,12 @@ public class TagReader {
      * The ID3v2 tag size is the size of the complete tag after unsychronisation,
      * including padding, excluding the header but not excluding the extended
      * header (total tag size - 10). Only 28 bits (representing up to 256MB)
-     * are used in the size description to avoid the introducuction of 'false
+     * are used in the size description to avoid the introduction of 'false
      * syncsignals'.
      *
      * @param header Header frame of ID3 tag.
-     * @return The size of frame ID3.
+     * @return The size of complete ID3 tag after unsychronisation, including
+     * padding, excluding the header but not excluding the extended header.
      */
     private int getSizeTag(final byte[] header) {
         assert header.length == 4;
