@@ -24,6 +24,11 @@ public class Frame {
     private final Layer layer;
 
     /**
+     * The encoded channel mode.
+     */
+    private final Mode mode;
+
+    /**
      * The bitrate index in hz.
      */
     private final int bitrate;
@@ -66,6 +71,7 @@ public class Frame {
         // Convert the value of kHz to hz.
         sampleFrequency = (int) getSamplingFrequency(headerString) * 1_000;
         paddingBit = isPaddingBit(headerString);
+        mode = getMode(headerString);
 
         determineFrameLengthInBytes();
 
@@ -272,7 +278,7 @@ public class Frame {
 
     /**
      * @param header The header information, common to all layers.
-     * @return the mode.
+     * @return The encoded channel mode.
      */
     private Mode getMode(final int header) {
         int result = header >>> 6;
