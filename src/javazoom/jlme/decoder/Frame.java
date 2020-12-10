@@ -67,8 +67,11 @@ public class Frame {
 
         determineFrameLengthInBytes();
 
-        dataFrame = new byte[frameLengthInBytes];
-        assert buffer.read(dataFrame, 0, frameLengthInBytes) == frameLengthInBytes;
+        // Rest 4 bytes: Because the frame length include the header (4 bytes of header),
+        // and the header has been read yet
+        dataFrame = new byte[frameLengthInBytes - 4];
+        // Equal here, rest 4 bytes because the header has been read yet
+        assert buffer.read(dataFrame, 0, frameLengthInBytes - 4) == frameLengthInBytes - 4;
     }
 
     /**
