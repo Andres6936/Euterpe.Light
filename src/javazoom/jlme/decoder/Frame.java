@@ -58,6 +58,11 @@ public class Frame {
      */
     private final byte[] dataFrame;
 
+    /**
+     * Buffer that store the data side information.
+     */
+    private final byte[] dataSideInformation;
+
     public Frame(BufferedInputStream buffer) throws IOException {
         headerString = getHeader(buffer);
 
@@ -80,6 +85,13 @@ public class Frame {
         dataFrame = new byte[frameLengthInBytes - 4];
         // Equal here, rest 4 bytes because the header has been read yet
         assert buffer.read(dataFrame, 0, frameLengthInBytes - 4) == frameLengthInBytes - 4;
+
+        // The side information part of the frame consists of information
+        // needed to decode the main data. The size depends on the encoded
+        // channel mode. If it is a single channel bitstream the size will
+        // be 17 bytes, if not, 32 bytes are allocated.
+        final int sizeSideInformation = (mode == Mode.SINGLE_CHANNEL ? 17 : 32);
+        dataSideInformation = new byte[sizeSideInformation];
     }
 
     /**
