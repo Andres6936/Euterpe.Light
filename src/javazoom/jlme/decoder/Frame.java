@@ -17,6 +17,11 @@ public class Frame {
     private int bitrate = 0;
 
     /**
+     * The sync word or header string.
+     */
+    private int headerString = 0;
+
+    /**
      * The sampling frequency in hz.
      */
     private int sampleFrequency = 0;
@@ -37,7 +42,7 @@ public class Frame {
     private final byte[] dataFrame;
 
     public Frame(BufferedInputStream buffer) throws IOException {
-        int headerString = getHeader(buffer);
+        headerString = getHeader(buffer);
 
         assert verifySyncWord(headerString);
         assert verifyAlgorithm(headerString);
