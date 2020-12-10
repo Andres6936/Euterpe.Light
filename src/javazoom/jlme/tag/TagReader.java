@@ -23,6 +23,8 @@ public class TagReader {
 
     public TagReader(BufferedInputStream buffer) throws IOException {
         int totalBytesRead = 0;
+        // The ID3v2 tag header, which should be the first information in the
+        // file, is 10 bytes .
         byte[] header = new byte[10];
         totalBytesRead += buffer.read(header, 0, 10);
         verifyHeader(header);
@@ -38,9 +40,15 @@ public class TagReader {
         assert totalBytesRead == sizeTag + 10;
     }
 
-
+    /**
+     * The first three bytes of the tag are always "ID3" to indicate that this
+     * is an ID3v2 tag, directly followed by the two version bytes. The first
+     * byte of ID3v2 version is it's major version, while the second byte is
+     * its revision number.
+     *
+     * @param header Header frame of ID3 tag.
+     */
     private void verifyHeader(final byte[] header) {
-        assert header.length == 10;
         assert header[0] == 'I' && header[1] == 'D' && header[2] == '3';
         assert header[3] == 3 && header[4] == 0;
         assert verifyFlags(header[5]);
