@@ -366,6 +366,7 @@ public class Frame {
         frameLengthInBytes = (144 * bitrate / sampleFrequency) + (paddingBit ? 1 : 0);
     }
 
+    @SuppressWarnings("StringBufferReplaceableByString")
     @Override
     public String toString() {
         // The average of each invocation to toString is 461 characters.
