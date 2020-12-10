@@ -79,10 +79,6 @@ public class TagReader {
      */
     private int getSizeTag(final byte[] header) {
         assert header.length == 4;
-        System.out.println("Size[0]: " + Integer.toBinaryString(header[0]));
-        System.out.println("Size[1]: " + Integer.toBinaryString(header[1]));
-        System.out.println("Size[2]: " + Integer.toBinaryString(header[2]));
-        System.out.println("Size[3]: " + Integer.toBinaryString(header[3]));
         return (header[0] << 24) | (header[1] << 16) | (header[2] << 8) | header[3];
     }
 }
