@@ -78,20 +78,22 @@ public class Frame {
         paddingBit = isPaddingBit(headerString);
         mode = getMode(headerString);
 
-        determineFrameLengthInBytes();
-
-        // Rest 4 bytes: Because the frame length include the header (4 bytes of header),
-        // and the header has been read yet
-        dataFrame = new byte[frameLengthInBytes - 4];
-        // Equal here, rest 4 bytes because the header has been read yet
-        assert buffer.read(dataFrame, 0, frameLengthInBytes - 4) == frameLengthInBytes - 4;
-
         // The side information part of the frame consists of information
         // needed to decode the main data. The size depends on the encoded
         // channel mode. If it is a single channel bitstream the size will
         // be 17 bytes, if not, 32 bytes are allocated.
         final int sizeSideInformation = (mode == Mode.SINGLE_CHANNEL ? 17 : 32);
         dataSideInformation = new byte[sizeSideInformation];
+        assert buffer.read(dataSideInformation, 0, sizeSideInformation) == sizeSideInformation;
+
+        determineFrameLengthInBytes();
+
+        // Rest 4 bytes: Because the frame length include the header (4 bytes of header),
+        // and the header has been read yet, and too rest the size of side information
+        // block, because it too has been read.
+        final int sizeOfDataFrame = frameLengthInBytes - 4 - sizeSideInformation;
+        dataFrame = new byte[sizeOfDataFrame];
+        assert buffer.read(dataFrame, 0, sizeOfDataFrame) == sizeOfDataFrame;
     }
 
     /**
