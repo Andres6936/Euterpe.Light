@@ -43,6 +43,6 @@ public class TagReader {
         System.out.println("Size[1]: " + Integer.toBinaryString(size[1]));
         System.out.println("Size[2]: " + Integer.toBinaryString(size[2]));
         System.out.println("Size[3]: " + Integer.toBinaryString(size[3]));
-        return (size[0] << 24) + (size[1] << 16) + (size[2] << 8) + size[3];
+        return (size[0] << 24) | (size[1] << 16) | (size[2] << 8) | size[3];
     }
 }
