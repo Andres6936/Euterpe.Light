@@ -52,6 +52,8 @@ public class TagReader {
         assert header.length >= 5;
         assert header[0] == 'I' && header[1] == 'D' && header[2] == '3';
         assert header[3] == 3 && header[4] == 0;
+        // The version is followed by one the ID3v2 flags field, of which
+        // currently only three flags are used.
         assert verifyFlags(header[5]);
     }
 
