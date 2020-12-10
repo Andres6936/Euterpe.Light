@@ -798,7 +798,7 @@ final class LayerIIIDecoder {
             }
 
             for (int channel = 0; channel < channels; channel++) {
-                LayerIIIDecoder.Channel t = sideInformation.ch[channel];
+                Channel t = sideInformation.ch[channel];
                 t.scfsi[0] = stream.readbits(1);
                 t.scfsi[1] = stream.readbits(1);
                 t.scfsi[2] = stream.readbits(1);
@@ -807,7 +807,7 @@ final class LayerIIIDecoder {
 
             for (gr = 0; gr < 2; gr++) {
                 for (int channel = 0; channel < channels; channel++) {
-                    LayerIIIDecoder.GRInfo s = sideInformation.ch[channel].gr[gr];
+                    GRInfo s = sideInformation.ch[channel].gr[gr];
                     // Length of the scaling factors and main data in bits.
                     s.part2_3_length = stream.readbits(12);
                     // Number of values in each big_region.
@@ -873,7 +873,7 @@ final class LayerIIIDecoder {
                 sideInformation.private_bits = stream.readbits(2);
             }
             for (int channel = 0; channel < channels; channel++) {
-                LayerIIIDecoder.GRInfo s = sideInformation.ch[channel].gr[0];
+                GRInfo s = sideInformation.ch[channel].gr[0];
                 s.part2_3_length = stream.readbits(12);
                 s.big_values = stream.readbits(9);
                 s.global_gain = stream.readbits(8);
@@ -1860,49 +1860,4 @@ final class LayerIIIDecoder {
             prevblck[ch][sbt] = rawout[35];
         }
     }
-
-    private static final class GRInfo {
-        private int part2_3_length;
-        private int big_values;
-        private int global_gain;
-        private int scalefac_compress;
-        private int window_switching_flag;
-        private int block_type;
-        private int mixed_block_flag;
-        private final int[] table_select = new int[3];
-        private final int[] subblock_gain = new int[3];
-        private int region0_count;
-        private int region1_count;
-        private int preflag;
-        private int scalefac_scale;
-        private int count1table_select;
-    }
-
-    /**
-     * The side information is 17 bytes for mono, 32 bytes otherwise. There’s
-     * lots of information in the side info. Most of the bits describe how the
-     * main data should be parsed, but there are also some parameters saved
-     * here used by other parts of the decoder.
-     */
-    private static final class SideInformation {
-        private int main_data_begin;
-        private int private_bits;
-        private final Channel[] ch = new Channel[2];
-
-        public SideInformation() {
-            ch[0] = new Channel();
-            ch[1] = new Channel();
-        }
-    }
-
-    private static final class Channel {
-        private final int[] scfsi = new int[4];
-        private final GRInfo[] gr = new GRInfo[2];
-
-        public Channel() {
-            gr[0] = new GRInfo();
-            gr[1] = new GRInfo();
-        }
-    }
-
 }
