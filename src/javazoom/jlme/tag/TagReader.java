@@ -3,6 +3,20 @@ package javazoom.jlme.tag;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 
+/**
+ * Read the content of ID3v2 tag.
+ * <br><br>
+ * <p>
+ * The ID3v2 offers a flexible way of storing information about an audio file
+ * within itself to determine its origin and contents. The information may be
+ * technical information, such as equalisation curves, as well as related meta
+ * information, such as title, performer, copyright etc.
+ * <br><br>
+ * <p>
+ * The tag consists of a header, frames and optional padding. A field is a
+ * piece of information; one value, a string etc. A numeric string is a string
+ * that consists of the characters 0-9 only.
+ */
 public class TagReader {
 
     private final byte[] dataTag;
