@@ -524,6 +524,12 @@ public final class Header {
      */
     private void determineFrameLengthInBytes() {
         frameLengthInBytes = (144 * bitrate / sampleFrequency) + (paddingBit ? 1 : 0);
+        // Side information can either be 17 bytes if it is a single channel or 32 bytes if
+        // it is a dual channel. Side information always immediately follows the
+        // header. Basically, it contains all the relevant information to decode the main
+        // data.
+        // For example it contains the main data begin pointer, scale factor
+        // selection information, Huffman table information for both the granules etc.
         nSlots = frameLengthInBytes - ((h_mode == SINGLE_CHANNEL) ? 17 : 32) - ((h_protection_bit != 0) ? 0 : 2) - 4;
     }
 
