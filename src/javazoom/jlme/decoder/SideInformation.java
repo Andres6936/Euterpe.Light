@@ -20,4 +20,20 @@ public class SideInformation {
         ch[0] = new Channel();
         ch[1] = new Channel();
     }
+
+    public SideInformation(final byte[] buffer) {
+        assert buffer.length == 17 || buffer.length == 32;
+
+        if (buffer.length == 17) {
+            // Reserve space for get 16 bits
+            byte[] reserve = new byte[2];
+            // Copy the first two bytes (16 bits) from the buffer
+            reserve[0] = buffer[0];
+            reserve[1] = buffer[1];
+            // Get the first 8 bits
+            int mainDataBegin = reserve[0];
+        } else {
+
+        }
+    }
 }
