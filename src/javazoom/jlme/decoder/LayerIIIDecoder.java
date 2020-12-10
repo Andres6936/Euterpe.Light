@@ -787,7 +787,6 @@ final class LayerIIIDecoder {
      *
      */
     private void readSideInformation() {
-        int ch;
         int gr;
         if (header.version() == Header.MPEG1) {
             sideInformation.main_data_begin = stream.readbits(9);
@@ -797,8 +796,8 @@ final class LayerIIIDecoder {
                 sideInformation.private_bits = stream.readbits(3);
             }
 
-            for (ch = 0; ch < channels; ch++) {
-                LayerIIIDecoder.Channel t = sideInformation.ch[ch];
+            for (int channel = 0; channel < channels; channel++) {
+                LayerIIIDecoder.Channel t = sideInformation.ch[channel];
                 t.scfsi[0] = stream.readbits(1);
                 t.scfsi[1] = stream.readbits(1);
                 t.scfsi[2] = stream.readbits(1);
@@ -806,8 +805,8 @@ final class LayerIIIDecoder {
             }
 
             for (gr = 0; gr < 2; gr++) {
-                for (ch = 0; ch < channels; ch++) {
-                    LayerIIIDecoder.GRInfo s = sideInformation.ch[ch].gr[gr];
+                for (int channel = 0; channel < channels; channel++) {
+                    LayerIIIDecoder.GRInfo s = sideInformation.ch[channel].gr[gr];
                     s.part2_3_length = stream.readbits(12);
                     s.big_values = stream.readbits(9);
                     s.global_gain = stream.readbits(8);
@@ -853,8 +852,8 @@ final class LayerIIIDecoder {
             } else {
                 sideInformation.private_bits = stream.readbits(2);
             }
-            for (ch = 0; ch < channels; ch++) {
-                LayerIIIDecoder.GRInfo s = sideInformation.ch[ch].gr[0];
+            for (int channel = 0; channel < channels; channel++) {
+                LayerIIIDecoder.GRInfo s = sideInformation.ch[channel].gr[0];
                 s.part2_3_length = stream.readbits(12);
                 s.big_values = stream.readbits(9);
                 s.global_gain = stream.readbits(8);
