@@ -29,9 +29,12 @@ import java.io.IOException;
 import java.util.OptionalInt;
 
 /**
- * Description of the Class
- *
- * @author micah
+ * The 4-byte header stores some properties about the audio signal, most
+ * importantly the sample rate and the channel mode (mono, stereo etc).
+ * The information in the header is useful both for media player software,
+ * and for decoding the audio. Note that the header does not store many
+ * parameters used by the decoder, e.g. how audio samples should be
+ * reconstructed, those parameters are stored elsewhere.
  */
 public final class Header {
 
