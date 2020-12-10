@@ -355,7 +355,7 @@ final class LayerIIIDecoder {
     private static SampleBuffer buffer;
     private static int which_channels;
     private static BitReserve br;
-    private static SideInfo sideInformation;
+    private static SideInformation sideInformation;
 
     public static int[] scalefac0L = new int[23];
     public static int[][] scalefac0S = new int[3][13];
@@ -441,7 +441,7 @@ final class LayerIIIDecoder {
         }
         nonzero0 = nonzero1 = 576;
         br = new BitReserve();
-        sideInformation = new SideInfo();
+        sideInformation = new SideInformation();
         h = new HuffmanTables();
     }
 
@@ -1859,12 +1859,12 @@ final class LayerIIIDecoder {
         private int count1table_select;
     }
 
-    private static final class SideInfo {
+    private static final class SideInformation {
         private int main_data_begin;
         private int private_bits;
         private final Channel[] ch = new Channel[2];
 
-        public SideInfo() {
+        public SideInformation() {
             ch[0] = new Channel();
             ch[1] = new Channel();
         }
