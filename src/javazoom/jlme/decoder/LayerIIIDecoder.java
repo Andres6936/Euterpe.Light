@@ -785,9 +785,8 @@ final class LayerIIIDecoder {
      * selection information, Huffman table information for both the granules etc.
      * <br><br>
      *
-     * @return Description of the Returned Value
      */
-    private boolean readSideInformation() {
+    private void readSideInformation() {
         int ch;
         int gr;
         if (header.version() == Header.MPEG1) {
@@ -825,7 +824,7 @@ final class LayerIIIDecoder {
                         // Set region_count parameters since they are implicit in this case.
                         if (s.block_type == 0) {
                             //	 Side info bad: block_type == 0 in split block
-                            return false;
+                            return;
                         } else if (s.block_type == 2 && s.mixed_block_flag == 0) {
                             s.region0_count = 8;
                         } else {
@@ -872,7 +871,7 @@ final class LayerIIIDecoder {
                     // Set region_count parameters since they are implicit in this case.
                     if (s.block_type == 0) {
                         // Side info bad: block_type == 0 in split block
-                        return false;
+                        return;
                     } else if (s.block_type == 2 && s.mixed_block_flag == 0) {
                         s.region0_count = 8;
                     } else {
@@ -893,7 +892,6 @@ final class LayerIIIDecoder {
             }
         }
 
-        return true;
     }
 
     private static final byte stab[][][] = {
