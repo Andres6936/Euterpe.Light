@@ -19,6 +19,9 @@ import java.io.IOException;
  */
 public class TagReader {
 
+    /**
+     * Buffer that store the bytes of data ID3 tag. (Excluding the header).
+     */
     private final byte[] dataTag;
 
     /**
