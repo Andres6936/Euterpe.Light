@@ -4,6 +4,18 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.OptionalInt;
 
+/**
+ * Many computer users know that an MP3 are made up of several “frames”,
+ * consecutive blocks of data. While important for unpacking the bit stream,
+ * frames are not fundamental and cannot be decoded individually. For this
+ * case, what is usually called a frame we call a physical frame, while
+ * we call a block of data that can actually be decoded a logical frame, or
+ * simply just a frame.
+ * <p>
+ * A logical frame has many parts: it has a 4 byte header easily
+ * distinguishable from other data in the bit stream, it has 17 or 32 bytes
+ * known as side information, and a few hundred bytes of main data.
+ */
 public class Frame {
 
     /**
