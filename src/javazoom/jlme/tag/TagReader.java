@@ -62,12 +62,19 @@ public class TagReader {
         return true;
     }
 
-    private int getSizeTag(final byte[] size) {
-        assert size.length == 4;
-        System.out.println("Size[0]: " + Integer.toBinaryString(size[0]));
-        System.out.println("Size[1]: " + Integer.toBinaryString(size[1]));
-        System.out.println("Size[2]: " + Integer.toBinaryString(size[2]));
-        System.out.println("Size[3]: " + Integer.toBinaryString(size[3]));
-        return (size[0] << 24) | (size[1] << 16) | (size[2] << 8) | size[3];
+    /**
+     * The ID3v2 tag size is encoded with four bytes where the most significant
+     * bit (bit 7) is set to zero in every byte, making a total of 28 bits.
+     *
+     * @param header Header frame of ID3 tag.
+     * @return The size of frame ID3.
+     */
+    private int getSizeTag(final byte[] header) {
+        assert header.length == 4;
+        System.out.println("Size[0]: " + Integer.toBinaryString(header[0]));
+        System.out.println("Size[1]: " + Integer.toBinaryString(header[1]));
+        System.out.println("Size[2]: " + Integer.toBinaryString(header[2]));
+        System.out.println("Size[3]: " + Integer.toBinaryString(header[3]));
+        return (header[0] << 24) | (header[1] << 16) | (header[2] << 8) | header[3];
     }
 }
