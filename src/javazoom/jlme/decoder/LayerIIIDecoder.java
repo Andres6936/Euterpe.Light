@@ -355,7 +355,7 @@ final class LayerIIIDecoder {
     private static SampleBuffer buffer;
     private static int which_channels;
     private static BitReserve br;
-    private static SideInfo si;
+    private static SideInfo sideInformation;
 
     public static int[] scalefac0L = new int[23];
     public static int[][] scalefac0S = new int[3][13];
@@ -441,7 +441,7 @@ final class LayerIIIDecoder {
         }
         nonzero0 = nonzero1 = 576;
         br = new BitReserve();
-        si = new SideInfo();
+        sideInformation = new SideInfo();
         h = new HuffmanTables();
     }
 
@@ -460,7 +460,7 @@ final class LayerIIIDecoder {
         }
 
         // E.B Fix.
-        int bytes_to_discard = frame_start - main_data_end - si.main_data_begin;
+        int bytes_to_discard = frame_start - main_data_end - sideInformation.main_data_begin;
         frame_start += nSlots;
         if (bytes_to_discard < 0)
             return;
@@ -790,15 +790,15 @@ final class LayerIIIDecoder {
         int ch;
         int gr;
         if (header.version() == Header.MPEG1) {
-            si.main_data_begin = stream.readbits(9);
+            sideInformation.main_data_begin = stream.readbits(9);
             if (channels == 1) {
-                si.private_bits = stream.readbits(5);
+                sideInformation.private_bits = stream.readbits(5);
             } else {
-                si.private_bits = stream.readbits(3);
+                sideInformation.private_bits = stream.readbits(3);
             }
 
             for (ch = 0; ch < channels; ch++) {
-                LayerIIIDecoder.Channel t = si.ch[ch];
+                LayerIIIDecoder.Channel t = sideInformation.ch[ch];
                 t.scfsi[0] = stream.readbits(1);
                 t.scfsi[1] = stream.readbits(1);
                 t.scfsi[2] = stream.readbits(1);
@@ -807,7 +807,7 @@ final class LayerIIIDecoder {
 
             for (gr = 0; gr < 2; gr++) {
                 for (ch = 0; ch < channels; ch++) {
-                    LayerIIIDecoder.GRInfo s = si.ch[ch].gr[gr];
+                    LayerIIIDecoder.GRInfo s = sideInformation.ch[ch].gr[gr];
                     s.part2_3_length = stream.readbits(12);
                     s.big_values = stream.readbits(9);
                     s.global_gain = stream.readbits(8);
@@ -847,14 +847,14 @@ final class LayerIIIDecoder {
         } else {
             //unused currently
             // MPEG-2 LSF
-            si.main_data_begin = stream.readbits(8);
+            sideInformation.main_data_begin = stream.readbits(8);
             if (channels == 1) {
-                si.private_bits = stream.readbits(1);
+                sideInformation.private_bits = stream.readbits(1);
             } else {
-                si.private_bits = stream.readbits(2);
+                sideInformation.private_bits = stream.readbits(2);
             }
             for (ch = 0; ch < channels; ch++) {
-                LayerIIIDecoder.GRInfo s = si.ch[ch].gr[0];
+                LayerIIIDecoder.GRInfo s = sideInformation.ch[ch].gr[0];
                 s.part2_3_length = stream.readbits(12);
                 s.big_values = stream.readbits(9);
                 s.global_gain = stream.readbits(8);
@@ -961,7 +961,7 @@ final class LayerIIIDecoder {
         int s[][] = null;
         int scf = 0;
         boolean i_stereo = ((header.mode() == Header.JOINT_STEREO) && ((header.mode_extension() & 0x1) != 0));
-        GRInfo gr_info = (si.ch[ch].gr[gr]);
+        GRInfo gr_info = (sideInformation.ch[ch].gr[gr]);
 
         if (ch == 0) {
             l = scalefac0L;
@@ -1042,7 +1042,7 @@ final class LayerIIIDecoder {
     }
 
     private final void get_scale_factors_1(final int ch, final int gr) {
-        GRInfo gr_info = (si.ch[ch].gr[gr]);
+        GRInfo gr_info = (sideInformation.ch[ch].gr[gr]);
         int scale_comp = gr_info.scalefac_compress;
         int length0 = slen0[scale_comp];
         int length1 = slen1[scale_comp];
@@ -1117,7 +1117,7 @@ final class LayerIIIDecoder {
             // SHORT
         } else {
             // LONG types 0,1,3
-            int si_t[] = si.ch[ch].scfsi;
+            int si_t[] = sideInformation.ch[ch].scfsi;
             if (gr == 0) {
                 l[0] = br.hgetbits(length0);
                 l[1] = br.hgetbits(length0);
@@ -1178,7 +1178,7 @@ final class LayerIIIDecoder {
 
     private final void huffman_decode(final int ch, final int gr) {
         //huff.x = huff.y = huff.v = huff.w= 0;
-        GRInfo s = si.ch[ch].gr[gr];
+        GRInfo s = sideInformation.ch[ch].gr[gr];
         int part2_3_end = part2_start + s.part2_3_length;
         int num_bits = 0;
         int region1Start = 0;
@@ -1264,7 +1264,7 @@ final class LayerIIIDecoder {
     }
 
     private final void dequantize_sample(final float xr[][], final int ch, final int gr) {
-        GRInfo gr_info = (si.ch[ch].gr[gr]);
+        GRInfo gr_info = (sideInformation.ch[ch].gr[gr]);
         int cb = 0;
         int next_cb_boundary = 0;
         int cb_begin = 0;
@@ -1372,7 +1372,7 @@ final class LayerIIIDecoder {
     static int freq, freq3, src_line, des_line, sfb_start, sfb_start3, sfb_lines, reste, quotien;
 
     private final void reorder(final float xr[][], final int ch, final int gr) {
-        GRInfo gr_info = (si.ch[ch].gr[gr]);
+        GRInfo gr_info = (sideInformation.ch[ch].gr[gr]);
 
         if ((gr_info.window_switching_flag != 0) && (gr_info.block_type == 2)) {
             if (gr_info.mixed_block_flag != 0) {
@@ -1436,7 +1436,7 @@ final class LayerIIIDecoder {
                 }
             }
         } else {
-            GRInfo gr_info = (si.ch[0].gr[gr]);
+            GRInfo gr_info = (sideInformation.ch[0].gr[gr]);
             int mode_ext = header.mode_extension();
             // boolean ms_stereo = ((header.mode() == Header.JOINT_STEREO) && ((mode_ext & 0x2) != 0));
             boolean i_stereo = ((header.mode() == Header.JOINT_STEREO) && ((mode_ext & 0x1) != 0));
@@ -1720,7 +1720,7 @@ final class LayerIIIDecoder {
             };
 
     private final void antialias(final int ch, final int gr) {
-        GRInfo gr_info = (si.ch[ch].gr[gr]);
+        GRInfo gr_info = (sideInformation.ch[ch].gr[gr]);
 
         int sb18lim = 0;
 
@@ -1788,7 +1788,7 @@ final class LayerIIIDecoder {
     }
 
     private final void hybrid(final int ch, final int gr) {
-        GRInfo gr_info = (si.ch[ch].gr[gr]);
+        GRInfo gr_info = (sideInformation.ch[ch].gr[gr]);
         for (int sb18 = 0; sb18 < 576; sb18 += 18) {
             int bt = ((gr_info.window_switching_flag != 0) && (gr_info.mixed_block_flag != 0) && (sb18 < 36)) ? 0 : gr_info.block_type;
 
