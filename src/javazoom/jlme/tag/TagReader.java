@@ -25,6 +25,8 @@ public class TagReader {
     private final byte[] dataTag;
 
     /**
+     * Post-condition: The buffer point to first sync header.
+     *
      * @param buffer Buffer of bytes, that store the bytes of audio file.
      * @throws IOException If not is possible access to file or is produced
      *                     an error of read.
