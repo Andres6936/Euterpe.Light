@@ -83,7 +83,7 @@ public class Frame {
             System.err.println("Read of header not is possible.");
         }
 
-        return (buffer[0] << 24) + (buffer[1] << 16) + (buffer[2] << 8) + buffer[3];
+        return (buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8) | buffer[3];
     }
 
     /**
