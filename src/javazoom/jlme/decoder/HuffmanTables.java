@@ -157,11 +157,9 @@ final class HuffmanTables {
     }
 
     private void loadTables() {
-        ObjectInputStream in = null;
-        int array[][] = null;
 
-        try {
-            in = new ObjectInputStream(getClass().getClassLoader().getResourceAsStream("huffman.ser"));
+        int[][] array;
+        try (ObjectInputStream in = new ObjectInputStream(getClass().getClassLoader().getResourceAsStream("huffman.ser"))) {
             ht = new HuffmanTables[HTN];
             array = (int[][]) in.readObject();
             ht[0] = new HuffmanTables("0  ", 0, 0, 0, 0, -1, array, 0);
@@ -220,11 +218,6 @@ final class HuffmanTables {
         } catch (Exception e) {
             System.out.println("couldn't load the Huffman Tables");
             System.exit(1);
-        } finally {
-            try {
-                in.close();
-            } catch (Exception e) {
-            }
         }
     }
 
