@@ -49,6 +49,7 @@ public class TagReader {
      * @param header Header frame of ID3 tag.
      */
     private void verifyHeader(final byte[] header) {
+        assert header.length >= 5;
         assert header[0] == 'I' && header[1] == 'D' && header[2] == '3';
         assert header[3] == 3 && header[4] == 0;
         assert verifyFlags(header[5]);
