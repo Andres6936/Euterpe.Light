@@ -5,6 +5,7 @@ package javazoom.jlme.decoder;
  * decode the main data. The size depends on the encoded channel mode.
  * If it is a single channel bitstream the size will be 17 bytes, if not,
  * 32 bytes are allocated.
+ * <br><br>
  * <p>
  * There’s lots of information in the side info. Most of the bits describe
  * how the main data should be parsed, but there are also some parameters
