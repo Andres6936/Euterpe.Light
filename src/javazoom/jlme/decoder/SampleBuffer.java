@@ -1,4 +1,4 @@
-/***************************************************************************
+/*
  *  JLayerME is a JAVA library that decodes/plays/converts MPEG 1/2 Layer 3.
  *  Project Homepage: http://www.javazoom.net/javalayer/javalayerme.html.
  *  Copyright (C) JavaZOOM 1999-2005.
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  License along with this library; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *---------------------------------------------------------------------------
+ *
  */
 package javazoom.jlme.decoder;
 
@@ -26,8 +26,8 @@ public class SampleBuffer {
     public final static int MAXCHANNELS = 2;
     private final byte[] buffer = new byte[OBUFFERSIZE];
     private final int[] bufferp = new int[MAXCHANNELS];
-    private int channels;
-    private int frequency;
+    private final int channels;
+    private final int frequency;
 
     public SampleBuffer(int sample_frequency, int number_of_channels) {
         channels = (number_of_channels == 1) ? 1 : 3;
