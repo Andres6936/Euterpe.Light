@@ -95,21 +95,6 @@ public final class BitStream {
     }
 
     /**
-     * @return The first 32 bits (four bytes) are header information which is common to all layers.
-     */
-    public int getHeader() {
-        final byte[] buffer = new byte[4];
-
-        try {
-            assert bufferByte.read(buffer, 0, 4) == 4;
-        } catch (IOException exception) {
-            System.err.println("Read of header not is possible.");
-        }
-
-        return (buffer[0] << 24) + (buffer[1] << 16) + (buffer[2] << 8) + buffer[3];
-    }
-
-    /**
      * Gets the syncMark attribute of the Bitstream object
      *
      * @param headerstring  Description of Parameter
