@@ -789,6 +789,7 @@ final class LayerIIIDecoder {
     private void readSideInformation() {
         int gr;
         if (header.version() == Header.MPEG1) {
+            // Number of bytes the main data ends before the next frame header.
             sideInformation.main_data_begin = stream.readbits(9);
             if (channels == 1) {
                 sideInformation.private_bits = stream.readbits(5);
@@ -807,13 +808,24 @@ final class LayerIIIDecoder {
             for (gr = 0; gr < 2; gr++) {
                 for (int channel = 0; channel < channels; channel++) {
                     LayerIIIDecoder.GRInfo s = sideInformation.ch[channel].gr[gr];
+                    // Length of the scaling factors and main data in bits.
                     s.part2_3_length = stream.readbits(12);
+                    // Number of values in each big_region.
                     s.big_values = stream.readbits(9);
+                    // Quantizer step size.
                     s.global_gain = stream.readbits(8);
+                    // Used to determine the values of slen1 and slen2.
                     s.scalefac_compress = stream.readbits(4);
+                    // If set, a not normal window is used.
                     s.window_switching_flag = stream.readbits(1);
                     if ((s.window_switching_flag) != 0) {
+                        // The window type for the granule.
+                        // - 0: reserved
+                        // - 1: start block
+                        // - 2: 3 short windows
+                        // - 3: end block
                         s.block_type = stream.readbits(2);
+                        // Number of scale factor bands before window switching.
                         s.mixed_block_flag = stream.readbits(1);
                         s.table_select[0] = stream.readbits(5);
                         s.table_select[1] = stream.readbits(5);
@@ -831,15 +843,23 @@ final class LayerIIIDecoder {
                         }
                         s.region1_count = 20 - s.region0_count;
                     } else {
+                        // Set by default if !window_switching.
                         s.table_select[0] = stream.readbits(5);
                         s.table_select[1] = stream.readbits(5);
                         s.table_select[2] = stream.readbits(5);
+                        // Number of scale factor bands in the first big value region.
                         s.region0_count = stream.readbits(4);
+                        // Number of scale factor bands in the third big value region.
                         s.region1_count = stream.readbits(3);
                         s.block_type = 0;
+                        // scale factor bands is 12*3 = 36
                     }
+
+                    // If set, add values from a table to the scaling factors.
                     s.preflag = stream.readbits(1);
+                    // Determines the step size.
                     s.scalefac_scale = stream.readbits(1);
+                    // Table that determines which count1 table is used.
                     s.count1table_select = stream.readbits(1);
                 }
             }
