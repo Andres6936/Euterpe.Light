@@ -48,21 +48,6 @@ public class Frame {
         assert verifyAlgorithm(headerString);
         assert verifyPaddingBitFor44SamplingFrequency(headerString);
 
-        System.out.println("Header String: " + Integer.toBinaryString(headerString));
-        System.out.println("SynWord: " + verifySyncWord(headerString));
-        System.out.println("Algorithm: " + verifyAlgorithm(headerString));
-        System.out.println("Layer: " + getLayerUsed(headerString));
-        System.out.println("Redundancy Added: " + isRedundancyAdded(headerString));
-        System.out.println("Bit Rate Index: " + getBitRateIndex(headerString));
-        System.out.println("Sampling Frequency: " + getSamplingFrequency(headerString));
-        System.out.println("Padding Bit: " + isPaddingBit(headerString));
-        System.out.println("Private Bit: " + isPrivateBit(headerString));
-        System.out.println("Mode: " + getMode(headerString).name());
-        System.out.println("Mode Extension: " + getModeExtension(headerString));
-        System.out.println("Copyright: " + isCopyright(headerString));
-        System.out.println("Is Original: " + isOriginalOrHome(headerString));
-        System.out.println("Emphasis: " + getEmphasis(headerString).name());
-
         layer = getLayerUsed(headerString);
         // Convert the value of kHz to hz.
         bitrate = getBitRateIndex(headerString) * 1_000;
@@ -379,5 +364,28 @@ public class Frame {
      */
     private void determineFrameLengthInBytes() {
         frameLengthInBytes = (144 * bitrate / sampleFrequency) + (paddingBit ? 1 : 0);
+    }
+
+    @Override
+    public String toString() {
+        // The average of each invocation to toString is 461 characters.
+        StringBuilder representation = new StringBuilder(500);
+
+        representation.append("\nHeader String: ").append(Integer.toBinaryString(headerString));
+        representation.append("\nSynWord: ").append(verifySyncWord(headerString));
+        representation.append("\nAlgorithm: ").append(verifyAlgorithm(headerString));
+        representation.append("\nLayer: ").append(getLayerUsed(headerString));
+        representation.append("\nRedundancy Added: ").append(isRedundancyAdded(headerString));
+        representation.append("\nBit Rate Index: ").append(getBitRateIndex(headerString));
+        representation.append("\nSampling Frequency: ").append(getSamplingFrequency(headerString));
+        representation.append("\nPadding Bit: ").append(isPaddingBit(headerString));
+        representation.append("\nPrivate Bit: ").append(isPrivateBit(headerString));
+        representation.append("\nMode: ").append(getMode(headerString).name());
+        representation.append("\nMode Extension: ").append(getModeExtension(headerString));
+        representation.append("\nCopyright: ").append(isCopyright(headerString));
+        representation.append("\nIs Original: ").append(isOriginalOrHome(headerString));
+        representation.append("\nEmphasis: ").append(getEmphasis(headerString).name());
+
+        return representation.toString();
     }
 }
