@@ -29,8 +29,6 @@
 package javazoom.jlme.decoder;
 
 
-import java.util.Arrays;
-
 final class LayerIIIDecoder {
 
     private final static int pretab[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 3, 3, 3, 2, 0};
@@ -449,7 +447,7 @@ final class LayerIIIDecoder {
 
     public final void decodeFrame() {
         int nSlots = header.slots();
-        get_side_info();
+        readSideInformation();
 
         for (int i = 0; i < nSlots; i++) {
             br.hputbuf(stream.readbits(8));
@@ -778,7 +776,7 @@ final class LayerIIIDecoder {
      *
      * @return Description of the Returned Value
      */
-    private final boolean get_side_info() {
+    private boolean readSideInformation() {
         int ch;
         int gr;
         if (header.version() == Header.MPEG1) {
