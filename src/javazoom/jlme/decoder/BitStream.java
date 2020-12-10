@@ -70,8 +70,17 @@ public final class BitStream {
         bufferCopy = new BufferedInputStream(copy);
 
         try {
+            // Read the ID3 tag, the object read all bytes
+            // of ID3 tag and left to buffer with the bytes
+            // of frames audio.
             TagReader tagReader = new TagReader(bufferCopy);
+            // Read all the frames of audio and store in the
+            // array, the size of each frame is determine for
+            // itself.
             ArrayList<Frame> frames = new ArrayList<>();
+            // Like the size of each frame is determine for
+            // itself, is important read bytes to that it reach
+            // the final of file.
             while (bufferCopy.available() > 0) {
                 frames.add(new Frame(bufferCopy));
             }
