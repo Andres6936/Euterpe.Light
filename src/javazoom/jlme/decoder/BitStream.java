@@ -71,6 +71,10 @@ public final class BitStream {
 
         try {
             TagReader tagReader = new TagReader(bufferCopy);
+            ArrayList<Frame> frames = new ArrayList<>();
+            while (bufferCopy.available() > 0) {
+                frames.add(new Frame(bufferCopy));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -148,8 +152,6 @@ public final class BitStream {
         source.close();
     }
 
-    static boolean readOnlyOnce = false;
-
     /**
      * Reads and parses the next frame from the input source.
      *
@@ -160,25 +162,7 @@ public final class BitStream {
         //if (framesize == -1) {
         header.read_header(this);
         //}
-        if (!readOnlyOnce) {
-            readHeaders();
-            readOnlyOnce = true;
-        }
-
         return header;
-    }
-
-    private void readHeaders() {
-        ArrayList<Frame> frames = new ArrayList<>();
-        try {
-            while (bufferCopy.available() > 0) {
-                frames.add(new Frame(bufferCopy));
-            }
-        } catch (IOException exception) {
-            System.out.println("Frame not is possible read bytes.");
-        }
-
-        System.out.println("Number of frames: " + frames.size());
     }
 
     /**
