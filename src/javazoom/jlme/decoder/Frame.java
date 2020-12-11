@@ -90,7 +90,7 @@ public class Frame extends AbstractFrame {
         // Rest 4 bytes: Because the frame length include the header (4 bytes of header),
         // and the header has been read yet, and too rest the size of side information
         // block, because it too has been read.
-        final int sizeOfDataFrame = frameLengthInBytes - 4 - sizeSideInformation;
+        final int sizeOfDataFrame = frameLengthInBytes - (4 + sizeSideInformation);
         dataFrame = new byte[sizeOfDataFrame];
         assert buffer.read(dataFrame, 0, sizeOfDataFrame) == sizeOfDataFrame;
     }
