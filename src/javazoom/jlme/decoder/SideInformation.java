@@ -34,6 +34,13 @@ public class SideInformation {
             int mainDataBegin = (reserve[0] << 8) | (reserve[1]);
             // Clear the unused bits, 16 (bit set) - 9 (bit used) = 7 (bit unused)
             mainDataBegin = mainDataBegin >>> 7;
+            // Get the 5 bits of use private, the offset is 9 + 5 = 14 (Second bit, already get)
+            // The bits of interest are marked with x, the other with _
+            // The form of actual private bits is: _xxxxx__
+            // Needed clear the bits without that not are of us interest
+            byte privateBits = reserve[1];
+            privateBits = (byte) (privateBits << 1);
+            privateBits = (byte) (privateBits >>> 3);
         } else {
 
         }
