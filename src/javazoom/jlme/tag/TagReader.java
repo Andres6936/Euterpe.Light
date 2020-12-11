@@ -68,7 +68,6 @@ public class TagReader {
     }
 
     private boolean verifyFlags(final byte flags) {
-        System.out.println("Flags: " + Integer.toBinaryString(flags));
         return true;
     }
 
