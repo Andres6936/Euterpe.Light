@@ -4,7 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.OptionalInt;
 
-class IFrame {
+class AbstractFrame {
 
     /**
      * @return The first 32 bits (four bytes) are header information which is common to all layers.

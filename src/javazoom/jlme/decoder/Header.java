@@ -26,7 +26,6 @@ package javazoom.jlme.decoder;
 
 
 import java.io.IOException;
-import java.util.OptionalInt;
 
 /**
  * The 4-byte header stores some properties about the audio signal, most
@@ -36,7 +35,7 @@ import java.util.OptionalInt;
  * parameters used by the decoder, e.g. how audio samples should be
  * reconstructed, those parameters are stored elsewhere.
  */
-public final class Header extends IFrame {
+public final class Header extends AbstractFrame {
 
     /**
      * The algorithm used.

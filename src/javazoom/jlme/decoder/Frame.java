@@ -2,7 +2,6 @@ package javazoom.jlme.decoder;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.util.OptionalInt;
 
 /**
  * Many computer users know that an MP3 are made up of several “frames”,
@@ -16,7 +15,7 @@ import java.util.OptionalInt;
  * distinguishable from other data in the bit stream, it has 17 or 32 bytes
  * known as side information, and a few hundred bytes of main data.
  */
-public class Frame extends IFrame {
+public class Frame extends AbstractFrame {
 
     /**
      * The algorithm used.
