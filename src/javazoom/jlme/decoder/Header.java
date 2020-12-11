@@ -49,6 +49,11 @@ public final class Header {
     private int bitrate = 0;
 
     /**
+     * The header string or sync header.
+     */
+    private int headerstring = 0;
+
+    /**
      * The sampling frequency in hz.
      */
     private int sampleFrequency = 0;
@@ -395,7 +400,6 @@ public final class Header {
      * The first 32 bits (four bytes) are header information which is common to all layers.
      */
     final void read_header(BitStream stream) throws IOException {
-        int headerstring;
         int channel_bitrate;
         boolean sync = false;
         do {
@@ -404,21 +408,6 @@ public final class Header {
             assert verifySyncWord(headerstring);
             assert verifyAlgorithm(headerstring);
             assert verifyPaddingBitFor44SamplingFrequency(headerstring);
-
-            System.out.println("Header String: " + Integer.toBinaryString(headerstring));
-            System.out.println("SynWord: " + verifySyncWord(headerstring));
-            System.out.println("Algorithm: " + verifyAlgorithm(headerstring));
-            System.out.println("Layer: " + getLayerUsed(headerstring));
-            System.out.println("Redundancy Added: " + isRedundancyAdded(headerstring));
-            System.out.println("Bit Rate Index: " + getBitRateIndex(headerstring));
-            System.out.println("Sampling Frequency: " + getSamplingFrequency(headerstring));
-            System.out.println("Padding Bit: " + isPaddingBit(headerstring));
-            System.out.println("Private Bit: " + isPrivateBit(headerstring));
-            System.out.println("Mode: " + getMode(headerstring).name());
-            System.out.println("Mode Extension: " + getModeExtension(headerstring));
-            System.out.println("Copyright: " + isCopyright(headerstring));
-            System.out.println("Is Original: " + isOriginalOrHome(headerstring));
-            System.out.println("Emphasis: " + getEmphasis(headerstring).name());
 
             layer = getLayerUsed(headerstring);
             // Convert the value of kHz to hz.
@@ -534,6 +523,32 @@ public final class Header {
         // For example it contains the main data begin pointer, scale factor
         // selection information, Huffman table information for both the granules etc.
         nSlots = frameLengthInBytes - ((h_mode == SINGLE_CHANNEL) ? 17 : 32) - ((h_protection_bit != 0) ? 0 : 2) - 4;
+    }
+
+    // Override
+
+    @SuppressWarnings("StringBufferReplaceableByString")
+    @Override
+    public String toString() {
+        // The average of each invocation to toString is 461 characters.
+        StringBuilder representation = new StringBuilder(500);
+
+        representation.append("\nHeader String: ").append(Integer.toBinaryString(headerstring));
+        representation.append("\nSynWord: ").append(verifySyncWord(headerstring));
+        representation.append("\nAlgorithm: ").append(verifyAlgorithm(headerstring));
+        representation.append("\nLayer: ").append(getLayerUsed(headerstring));
+        representation.append("\nRedundancy Added: ").append(isRedundancyAdded(headerstring));
+        representation.append("\nBit Rate Index: ").append(getBitRateIndex(headerstring));
+        representation.append("\nSampling Frequency: ").append(getSamplingFrequency(headerstring));
+        representation.append("\nPadding Bit: ").append(isPaddingBit(headerstring));
+        representation.append("\nPrivate Bit: ").append(isPrivateBit(headerstring));
+        representation.append("\nMode: ").append(getMode(headerstring).name());
+        representation.append("\nMode Extension: ").append(getModeExtension(headerstring));
+        representation.append("\nCopyright: ").append(isCopyright(headerstring));
+        representation.append("\nIs Original: ").append(isOriginalOrHome(headerstring));
+        representation.append("\nEmphasis: ").append(getEmphasis(headerstring).name());
+
+        return representation.toString();
     }
 
     // Getters
