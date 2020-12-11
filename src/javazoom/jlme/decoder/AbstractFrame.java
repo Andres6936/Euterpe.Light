@@ -4,6 +4,9 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.OptionalInt;
 
+/**
+ * The utility of this class is avoid repeat code.
+ */
 class AbstractFrame {
 
     /**
