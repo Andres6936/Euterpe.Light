@@ -48,6 +48,17 @@ public class SideInformation {
             reserve[0] = buffer[0];
             reserve[1] = buffer[1];
             // Get the first 8 bits
+            // Note of implementation: Why reserve[1] >>> 24?
+            // Java makes automatic promotions of primitive types,
+            // so when reserve[1] is a limit value for bytes
+            // e.g. -128, the value is promoted to an int and its
+            // representation in binary passes from be: 1000'0000 a:
+            // 1111'1111' 1111'1111 1111'1111' 1000'0000
+            // That is why it is important to recover the first representation
+            // in value binary, the question is how, simple, if
+            // we take into account that in an int there are 32 bits, to
+            // to recover the 8-bit representation it is necessary to move
+            // 24 bits.
             int mainDataBegin = (reserve[0] << 8) | (reserve[1] >>> 24);
             // Clear the unused bits, 16 (bit set) - 9 (bit used) = 7 (bit unused)
             mainDataBegin = mainDataBegin >>> 7;
