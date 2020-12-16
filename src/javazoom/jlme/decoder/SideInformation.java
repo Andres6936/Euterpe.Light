@@ -51,10 +51,10 @@ public class SideInformation {
             // It is important to note that the byte values
             // in this code section can become negative
             // (signed), therefore it is important to perform an operation
-            // extra of bitshifting (bits & 0xFF) to get your
-            // byte-shaped representation and avoid promotion to int
-            // which makes Java automatically.
+            // extra of bitwise (& 0xFF) to get unsigned
+            // byte-shaped representation.
             // Reference: https://stackoverflow.com/q/50980248
+            // Please read the document: BitwiseAnd0xFF.md in docs directory
             int mainDataBegin = ((reserve[0] & 0xFF) << 8) | reserve[1] & 0xFF;
             // Clear the unused bits, 16 (bit set) - 9 (bit used) = 7 (bit unused)
             mainDataBegin = mainDataBegin >>> 7;
