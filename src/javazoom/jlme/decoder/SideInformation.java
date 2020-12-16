@@ -58,7 +58,6 @@ public class SideInformation {
             int mainDataBegin = ((reserve[0] & 0xFF) << 8) | reserve[1] & 0xFF;
             // Clear the unused bits, 16 (bit set) - 9 (bit used) = 7 (bit unused)
             mainDataBegin = mainDataBegin >>> 7;
-            System.out.println("Data Begin: " + mainDataBegin);
         }
     }
 }
