@@ -28,6 +28,11 @@ public class Frame extends AbstractFrame {
     private final Mode mode;
 
     /**
+     * The side information.
+     */
+    private final SideInformation sideInformation;
+
+    /**
      * The bitrate index in hz.
      */
     private final int bitrate;
@@ -85,11 +90,13 @@ public class Frame extends AbstractFrame {
         dataSideInformation = new byte[sizeSideInformation];
         assert buffer.read(dataSideInformation, 0, sizeSideInformation) == sizeSideInformation;
 
+        sideInformation = new SideInformation(dataSideInformation);
         determineFrameLengthInBytes();
 
         // Rest 4 bytes: Because the frame length include the header (4 bytes of header),
         // and the header has been read yet, and too rest the size of side information
         // block, because it too has been read.
+        assert frameLengthInBytes != 0 : "The frame length not has been initialized.";
         final int sizeOfDataFrame = frameLengthInBytes - (4 + sizeSideInformation);
         dataFrame = new byte[sizeOfDataFrame];
         assert buffer.read(dataFrame, 0, sizeOfDataFrame) == sizeOfDataFrame;
