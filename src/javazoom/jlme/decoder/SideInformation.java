@@ -42,7 +42,16 @@ public class SideInformation {
             privateBits = (byte) (privateBits << 1);
             privateBits = (byte) (privateBits >>> 3);
         } else {
-
+            // Reserve space for get 16 bits
+            byte[] reserve = new byte[2];
+            // Copy the first two bytes (16 bits) from the buffer
+            reserve[0] = buffer[0];
+            reserve[1] = buffer[1];
+            // Get the first 8 bits
+            int mainDataBegin = (reserve[0] << 8) | (reserve[1] >>> 24);
+            // Clear the unused bits, 16 (bit set) - 9 (bit used) = 7 (bit unused)
+            mainDataBegin = mainDataBegin >>> 7;
+            System.out.println("Data Begin: " + mainDataBegin);
         }
     }
 }
